@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    const API_URL = "http://localhost:5000/api/ai/chat";
+    const API_URL = "http://rbns.onrender.com/api/";
     const REQUEST_TIMEOUT_MS = 35000;
 
     let requestInProgress = false;
