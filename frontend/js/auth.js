@@ -129,6 +129,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // Safe API helper
     async function sendRequest(endpoint, payload) {
 
+        
+async function sendRequest(endpoint, payload) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+    try {
         const response = await fetch(
             `${API_BASE_URL}${endpoint}`,
             {
@@ -137,7 +143,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(payload),
+                signal: controller.signal
             }
         );
 
@@ -150,7 +157,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         return data;
+    } catch (error) {
+        if (error.name === "AbortError") {
+            throw new Error(
+                "Login timed out. Please try again."
+            );
+        }
+
+        throw error;
+    } finally {
+        clearTimeout(timeoutId);
     }
+}
 
 
     // Login form
