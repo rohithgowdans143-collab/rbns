@@ -268,7 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function loadDashboard() {
         try {
-            const data = await api("/dashboard");
+           const data = await api("/loans/dashboard");
 
             vendor = data.vendor;
             loans = data.loans || [];

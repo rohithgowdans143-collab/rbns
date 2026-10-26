@@ -8,17 +8,16 @@ const protect  = require("../middleware/authMiddleware");
 const router = express.Router();
 
 // GET all loans belonging to the logged-in user
-router.get("/", protect, async (req, res) => {
+app.use("/api/loans", require("./routes/loan")); {
     try {
-        const loans = await Loan.find({ user: req.user._id })
-            .sort({ createdAt: -1 });
-
+        const loans = await Loan.find({ user: req.user.id })
+    .sort({ createdAt: -1 });
         res.json({ loans });
     } catch (error) {
         console.error("Fetch loans error:", error);
         res.status(500).json({ message: "Failed to fetch loans" });
     }
-});
+};
 
 // CREATE a loan
 router.post("/", protect, async (req, res) => {
@@ -75,7 +74,7 @@ router.post("/", protect, async (req, res) => {
 // GET dashboard summary
 router.get("/dashboard", protect, async (req, res) => {
     try {
-        const loans = await Loan.find({ user: req.user._id });
+        const loans = await Loan.find({ user: req.user.id });
 
         const totalLoans = loans.length;
         const totalBorrowed = loans.reduce(
