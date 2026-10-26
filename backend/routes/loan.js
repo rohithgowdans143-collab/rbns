@@ -4,7 +4,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Loan = require("../models/loan");
-const protect  = require("../middleware/authmiddleware");
+const protect  = require("../middleware/authMiddleware");
 const router = express.Router();
 
 // GET all loans belonging to the logged-in user
