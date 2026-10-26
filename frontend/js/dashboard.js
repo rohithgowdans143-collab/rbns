@@ -1,7 +1,7 @@
 
 "use strict";
 
-const API_BASE_URL = "http://rbns.onrender.com/api";
+const API_BASE_URL = "https://rbns.onrender.com/api";
 
 document.addEventListener("DOMContentLoaded", () => {
 
