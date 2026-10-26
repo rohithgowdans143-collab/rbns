@@ -1,0 +1,1073 @@
+/* =========================================
+   MicroLoanX Dashboard
+========================================= */
+
+.dashboard-page {
+    min-height: 100vh;
+    color: #f4f5ff;
+    font-family: "DM Sans", sans-serif;
+}
+
+.dashboard-shell {
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr);
+    min-height: 100vh;
+    max-width: 1800px;
+    margin: 0 auto;
+}
+
+/* Sidebar */
+
+.sidebar {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100vh;
+    padding: 28px 18px;
+    overflow-y: auto;
+    background: rgba(11, 14, 39, 0.94);
+    border-right: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.sidebar-brand {
+    margin-bottom: 30px;
+    text-decoration: none;
+}
+
+.sidebar-caption {
+    margin: 12px 10px 6px;
+    color: #929ab9;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.6px;
+}
+
+.sidebar-nav {
+    display: grid;
+    gap: 7px;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    width: 100%;
+    padding: 12px 14px;
+    color: #b9c0df;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    font: inherit;
+    font-size: 14px;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.sidebar-link i {
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+    color: #fff;
+    background: linear-gradient(
+        110deg,
+        rgba(126, 87, 255, 0.24),
+        rgba(62, 196, 255, 0.10)
+    );
+    border-color: rgba(151, 128, 255, 0.24);
+}
+
+.sidebar-bottom-caption {
+    margin-top: 24px;
+}
+
+.logout-link {
+    font-family: inherit;
+}
+
+.sidebar-help {
+    margin-top: auto;
+    padding: 17px;
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 16px;
+}
+
+.help-icon {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    margin-bottom: 12px;
+    color: #c6b5ff;
+    background: rgba(142, 105, 255, 0.17);
+    border-radius: 12px;
+}
+
+.sidebar-help strong {
+    font-size: 14px;
+}
+
+.sidebar-help p {
+    margin: 8px 0;
+    color: #aab2d1;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.sidebar-help a {
+    color: #b9a7ff;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+/* Main content */
+
+.dashboard-main {
+    min-width: 0;
+    padding: 28px clamp(18px, 3vw, 44px);
+}
+
+.dashboard-topbar,
+.topbar-left,
+.topbar-actions,
+.dashboard-section-heading,
+.panel-heading,
+.summary-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.dashboard-topbar {
+    margin-bottom: 28px;
+}
+
+.topbar-eyebrow {
+    color: #9ba5c9;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.dashboard-topbar h1 {
+    margin: 5px 0 0;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: clamp(23px, 3vw, 32px);
+}
+
+.topbar-actions {
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.language-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 12px;
+    color: #c5cbea;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 12px;
+}
+
+.language-control select {
+    max-width: 110px;
+    color: #fff;
+    background: transparent;
+    border: 0;
+    outline: none;
+    font: inherit;
+}
+
+.language-control option {
+    color: #171a30;
+}
+
+.icon-button,
+.profile-avatar,
+.sidebar-toggle {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    color: #e8eaff;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 13px;
+}
+
+.icon-button {
+    position: relative;
+    cursor: pointer;
+}
+
+.notification-dot {
+    position: absolute;
+    top: 9px;
+    right: 9px;
+    width: 7px;
+    height: 7px;
+    background: #ff79b0;
+    border-radius: 50%;
+}
+
+.profile-avatar {
+    color: #fff;
+    background: linear-gradient(135deg, #8868ff, #ed69c8);
+    border: 0;
+    border-radius: 50%;
+    font-weight: 700;
+}
+
+.sidebar-toggle {
+    display: none;
+    cursor: pointer;
+}
+
+/* Welcome banner */
+
+.welcome-banner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 190px;
+    margin-bottom: 30px;
+    padding: clamp(24px, 4vw, 42px);
+    overflow: hidden;
+    background: linear-gradient(115deg, #30236e, #263b78 65%, #244a78);
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 24px;
+}
+
+.welcome-tag {
+    color: #d1c4ff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.welcome-banner h2 {
+    margin: 15px 0 9px;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: clamp(25px, 3vw, 37px);
+}
+
+.welcome-banner p,
+.dashboard-section-heading p,
+.panel-heading p {
+    margin: 0;
+    color: #b9c3e1;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.banner-art {
+    position: relative;
+    display: grid;
+    flex: 0 0 120px;
+    place-items: center;
+    width: 120px;
+    height: 120px;
+    color: #d6c9ff;
+    font-size: 50px;
+}
+
+.banner-orbit {
+    position: absolute;
+    inset: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+}
+
+.orbit-b {
+    inset: -10px;
+    border-style: dashed;
+}
+
+/* Summary cards */
+
+.dashboard-section-heading {
+    margin: 28px 0 18px;
+}
+
+.dashboard-section-heading h2,
+.panel-heading h2 {
+    margin: 0 0 5px;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 20px;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 26px;
+}
+
+.summary-card,
+.dashboard-panel {
+    min-width: 0;
+    background: rgba(18, 22, 54, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+}
+
+.summary-card {
+    padding: 21px;
+}
+
+.summary-card-top {
+    align-items: flex-start;
+    gap: 8px;
+    color: #bdc5e1;
+    font-size: 12px;
+}
+
+.summary-icon,
+.quick-action-icon,
+.panel-icon {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+}
+
+.purple {
+    color: #c6b4ff;
+    background: rgba(139, 99, 255, 0.17);
+}
+
+.green {
+    color: #80e8bd;
+    background: rgba(43, 203, 143, 0.14);
+}
+
+.cyan {
+    color: #7fe4ff;
+    background: rgba(47, 196, 235, 0.14);
+}
+
+.orange {
+    color: #ffc18b;
+    background: rgba(255, 151, 68, 0.14);
+}
+
+.summary-card h3 {
+    margin: 20px 0 7px;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: clamp(22px, 2vw, 30px);
+    overflow-wrap: anywhere;
+}
+
+.summary-card p {
+    margin: 0;
+    color: #9ea8ca;
+    font-size: 12px;
+}
+
+/* Panels and quick actions */
+
+.dashboard-panel {
+    margin-bottom: 24px;
+    padding: clamp(18px, 2.5vw, 27px);
+}
+
+.panel-heading {
+    margin-bottom: 22px;
+}
+
+.panel-heading p {
+    font-size: 13px;
+}
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.quick-action {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    padding: 15px;
+    color: #e9ebff;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 14px;
+    font: inherit;
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.quick-action:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.075);
+}
+
+.quick-action-icon {
+    width: 38px;
+    height: 38px;
+}
+
+.two-column-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.two-column-grid .dashboard-panel {
+    margin-bottom: 24px;
+}
+
+/* Tables */
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.data-table th {
+    padding: 13px 15px;
+    color: #aab4d5;
+    background: rgba(255, 255, 255, 0.035);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.data-table td {
+    padding: 16px 15px;
+    color: #e0e4f8;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.065);
+    font-size: 13px;
+}
+
+.empty-cell {
+    padding: 28px !important;
+    color: #9ea8ca !important;
+    text-align: center;
+    white-space: normal;
+}
+
+/* Forms */
+
+.inline-form {
+    display: grid;
+    gap: 17px;
+}
+
+.form-group {
+    display: grid;
+    gap: 8px;
+}
+
+.form-group label {
+    color: #c9d0eb;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    padding: 13px 14px;
+    color: #ffffff;
+    background: #1e2d50;
+    border: 1px solid #425779;
+    border-radius: 11px;
+    outline: none;
+    font: inherit;
+    font-size: 14px;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #7984a8;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #9b86ff;
+    box-shadow: 0 0 0 3px rgba(139, 99, 255, 0.13);
+}
+
+.inline-feedback {
+    margin-top: 12px;
+    font-size: 13px;
+}
+
+/* Buttons */
+
+.dashboard-page .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 11px 16px;
+    border-radius: 11px;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.dashboard-page .btn:hover {
+    transform: translateY(-1px);
+}
+
+.dashboard-page .btn-primary {
+    color: #fff;
+    background: linear-gradient(110deg, #8767ff, #e867c4);
+    border: 0;
+}
+
+.dashboard-page .btn-secondary {
+    color: #e3e6ff;
+    background: rgba(255, 255, 255, 0.055);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.dashboard-page button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+/* Reports and settings */
+
+#reports,
+#settings {
+    scroll-margin-top: 24px;
+}
+
+#reports h2,
+#settings h2 {
+    font-family: "Space Grotesk", sans-serif;
+}
+
+.dashboard-content section[id] {
+    scroll-margin-top: 20px;
+}
+
+/* Modals */
+
+.modal,
+.modal-overlay {
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(3, 5, 20, 0.78);
+    backdrop-filter: blur(8px);
+}
+
+.modal.open,
+.modal-overlay.open {
+    display: flex;
+}
+
+.modal-content {
+    box-sizing: border-box;
+    width: min(100%, 520px);
+    max-height: 90vh;
+    padding: 26px;
+    overflow-y: auto;
+    color: #f8fafc;
+    background: #111b35;
+    border: 1px solid #344563;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+/* Responsive */
+
+@media (max-width: 1200px) {
+    .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .quick-actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    .dashboard-shell {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .sidebar {
+        position: fixed;
+        z-index: 900;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 250px;
+        height: 100dvh;
+        box-sizing: border-box;
+        transform: translateX(-105%);
+        transition: transform 0.25s ease;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .sidebar-toggle {
+        display: grid;
+    }
+
+    .dashboard-main {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 650px) {
+    .dashboard-main {
+        padding: 14px;
+    }
+
+    .dashboard-topbar {
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .topbar-left {
+        gap: 10px;
+    }
+
+    .topbar-eyebrow {
+        font-size: 9px;
+    }
+
+    .dashboard-topbar h1 {
+        font-size: 22px;
+    }
+
+    .topbar-actions {
+        gap: 7px;
+    }
+
+    .language-control {
+        padding: 8px;
+    }
+
+    .language-control select {
+        width: 72px;
+        font-size: 11px;
+    }
+
+    .icon-button,
+    .profile-avatar,
+    .sidebar-toggle {
+        width: 36px;
+        height: 36px;
+    }
+
+    .welcome-banner {
+        min-height: auto;
+        padding: 23px;
+    }
+
+    .banner-art {
+        display: none;
+    }
+
+    .dashboard-section-heading {
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .summary-grid {
+        gap: 11px;
+    }
+
+    .summary-card {
+        padding: 14px;
+    }
+
+    .summary-card-top {
+        font-size: 11px;
+    }
+
+    .summary-icon {
+        width: 34px;
+        height: 34px;
+    }
+
+    .summary-card h3 {
+        font-size: 22px;
+    }
+
+    .quick-actions,
+    .two-column-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .panel-heading {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}
+
+/* ===== FINAL LOAN AND REPAYMENT MODAL THEME ===== */
+
+body.dashboard-page .modal-content {
+    background: #ffffff !important;
+    color: #172033 !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 18px !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Headings and descriptions */
+body.dashboard-page .modal-content h1,
+body.dashboard-page .modal-content h2,
+body.dashboard-page .modal-content h3,
+body.dashboard-page .modal-content p {
+    color: #172033 !important;
+    opacity: 1 !important;
+}
+
+/* Labels */
+body.dashboard-page .modal-content label,
+body.dashboard-page .modal-content .form-group label {
+    color: #334155 !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    opacity: 1 !important;
+}
+
+/* Text fields, dates, amounts and dropdowns */
+body.dashboard-page .modal-content input,
+body.dashboard-page .modal-content select,
+body.dashboard-page .modal-content textarea {
+    background: #f8fafc !important;
+    color: #111827 !important;
+    border: 2px solid #64748b !important;
+    border-radius: 10px !important;
+    font-size: 16px !important;
+    opacity: 1 !important;
+}
+
+/* Placeholder text */
+body.dashboard-page .modal-content input::placeholder,
+body.dashboard-page .modal-content textarea::placeholder {
+    color: #475569 !important;
+    opacity: 1 !important;
+}
+
+/* Dropdown options */
+body.dashboard-page .modal-content select option {
+    background: #ffffff !important;
+    color: #111827 !important;
+}
+
+/* Date picker */
+body.dashboard-page .modal-content input[type="date"] {
+    color-scheme: light !important;
+}
+
+/* Focused fields */
+body.dashboard-page .modal-content input:focus,
+body.dashboard-page .modal-content select:focus,
+body.dashboard-page .modal-content textarea:focus {
+    border-color: #047857 !important;
+    outline: 3px solid #a7f3d0 !important;
+}
+
+/* Save buttons */
+body.dashboard-page .modal-content button,
+body.dashboard-page .modal-content .btn {
+    background: #047857 !important;
+    color: #ffffff !important;
+    border: none !important;
+    opacity: 1 !important;
+    font-weight: 700 !important;
+}
+
+/* Close button remains visible */
+body.dashboard-page .modal-content .modal-close,
+body.dashboard-page .modal-content .close-modal {
+    color: #334155 !important;
+}
+/* ==========================================
+   MICROLOANX - HIGH CONTRAST FORM FIX
+   Add Loan and Record Repayment
+   ========================================== */
+
+/* Modal / form container */
+.modal-content,
+.modal-content form {
+    color: #172033 !important;
+}
+
+/* Form headings */
+.modal-content h1,
+.modal-content h2,
+.modal-content h3 {
+    color: #111827 !important;
+    font-weight: 800 !important;
+}
+
+/* Form descriptions */
+.modal-content p {
+    color: #475569 !important;
+}
+
+/* Labels */
+.modal-content label,
+.modal-content .form-group label {
+    color: #1e293b !important;
+    font-weight: 700 !important;
+    opacity: 1 !important;
+}
+
+/* Text inputs, number inputs, dates, dropdowns */
+.modal-content input,
+.modal-content select,
+.modal-content textarea,
+.modal-content input[type="date"],
+.modal-content input[type="number"],
+.modal-content input[type="text"] {
+    background: #ffffff !important;
+    color: #111827 !important;
+    border: 2px solid #64748b !important;
+    border-radius: 10px !important;
+    opacity: 1 !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    padding: 13px 14px !important;
+    box-shadow: none !important;
+}
+
+/* Placeholder text */
+.modal-content input::placeholder,
+.modal-content textarea::placeholder {
+    color: #64748b !important;
+    opacity: 1 !important;
+}
+
+/* Dropdown options */
+.modal-content select option {
+    background: #ffffff !important;
+    color: #111827 !important;
+}
+
+/* Focused fields */
+.modal-content input:focus,
+.modal-content select:focus,
+.modal-content textarea:focus {
+    outline: 3px solid #86efac !important;
+    border-color: #15803d !important;
+}
+
+/* Save buttons */
+.modal-content button[type="submit"],
+.modal-content input[type="submit"],
+.modal-content .btn-primary {
+    background: #047857 !important;
+    color: #ffffff !important;
+    border: 2px solid #047857 !important;
+    font-weight: 800 !important;
+    opacity: 1 !important;
+    box-shadow: none !important;
+}
+
+/* Close button */
+.modal-content .close,
+.modal-content .modal-close,
+.modal-content button[aria-label="Close"] {
+    color: #334155 !important;
+    opacity: 1 !important;
+}
+
+/* Labels and fields must remain readable */
+.modal-content * {
+    text-shadow: none;
+}
+
+/* Prevent disabled buttons from becoming unreadable */
+.modal-content button:disabled,
+.modal-content input:disabled {
+    color: #475569 !important;
+    opacity: 0.8 !important;
+}
+
+/* =========================================
+   MICROLOANX - FIX LOAN & REPAYMENT DIALOGS
+   ========================================= */
+
+body.dashboard-page dialog.app-modal {
+    background: #ffffff !important;
+    color: #111827 !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 18px !important;
+    padding: 28px !important;
+    width: min(92vw, 520px) !important;
+    max-width: 520px !important;
+    max-height: 85vh !important;
+    overflow-y: auto !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.4) !important;
+}
+
+body.dashboard-page dialog.app-modal::backdrop {
+    background: rgba(5, 10, 30, 0.78) !important;
+    backdrop-filter: blur(4px);
+}
+
+/* Form layout */
+body.dashboard-page dialog.app-modal .modal-form {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 15px !important;
+    width: 100% !important;
+    color: #111827 !important;
+}
+
+/* Heading */
+body.dashboard-page dialog.app-modal .modal-heading h2 {
+    color: #111827 !important;
+    font-size: 25px !important;
+    font-weight: 800 !important;
+    margin: 0 0 8px !important;
+}
+
+body.dashboard-page dialog.app-modal .modal-heading p {
+    color: #475569 !important;
+    font-size: 15px !important;
+    line-height: 1.5 !important;
+    margin: 0 !important;
+}
+
+/* Labels */
+body.dashboard-page dialog.app-modal .form-group label {
+    display: block !important;
+    color: #1e293b !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    opacity: 1 !important;
+    margin-bottom: 8px !important;
+}
+
+/* Input fields and dropdown */
+body.dashboard-page dialog.app-modal .form-group input,
+body.dashboard-page dialog.app-modal .form-group select,
+body.dashboard-page dialog.app-modal .form-group textarea {
+    display: block !important;
+    width: 100% !important;
+    min-height: 48px !important;
+    box-sizing: border-box !important;
+    background: #f8fafc !important;
+    color: #111827 !important;
+    -webkit-text-fill-color: #111827 !important;
+    border: 1.5px solid #94a3b8 !important;
+    border-radius: 10px !important;
+    padding: 12px 14px !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    opacity: 1 !important;
+    box-shadow: none !important;
+}
+
+/* Placeholder text */
+body.dashboard-page dialog.app-modal input::placeholder {
+    color: #64748b !important;
+    -webkit-text-fill-color: #64748b !important;
+    opacity: 1 !important;
+}
+
+/* Dropdown options */
+body.dashboard-page dialog.app-modal select option {
+    background: #ffffff !important;
+    color: #111827 !important;
+}
+
+/* Focus */
+body.dashboard-page dialog.app-modal .form-group input:focus,
+body.dashboard-page dialog.app-modal .form-group select:focus,
+body.dashboard-page dialog.app-modal .form-group textarea:focus {
+    outline: 3px solid rgba(22, 163, 74, 0.2) !important;
+    border-color: #15803d !important;
+}
+
+/* Save Loan and Save Repayment buttons */
+body.dashboard-page dialog.app-modal button.auth-submit {
+    width: 100% !important;
+    min-height: 48px !important;
+    margin-top: 5px !important;
+    background: #047857 !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    border: 1px solid #047857 !important;
+    border-radius: 10px !important;
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    opacity: 1 !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+}
+
+/* Keep the close icon visible */
+body.dashboard-page dialog.app-modal .modal-close {
+    color: #334155 !important;
+    opacity: 1 !important;
+}
+
+/* Clear disabled buttons */
+body.dashboard-page dialog.app-modal button:disabled {
+    background: #cbd5e1 !important;
+    color: #334155 !important;
+    -webkit-text-fill-color: #334155 !important;
+    opacity: 1 !important;
+    cursor: not-allowed !important;
+}

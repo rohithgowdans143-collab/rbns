@@ -1,0 +1,453 @@
+
+/* =====================================
+   MICROLOANX RESPONSIVE DESIGN
+   ===================================== */
+
+/* Tablets and smaller laptops */
+@media (max-width: 1100px) {
+
+    .navbar {
+        gap: 18px;
+    }
+
+    .nav-links {
+        gap: 18px;
+    }
+
+    .hero {
+        gap: 35px;
+        min-height: auto;
+        padding-top: 75px;
+        padding-bottom: 85px;
+    }
+
+    .hero-title {
+        font-size: clamp(42px, 5.2vw, 58px);
+    }
+
+    .dashboard-preview {
+        padding: 20px;
+    }
+
+    .floating-notification {
+        right: -10px;
+    }
+
+    .about-card {
+        padding: 40px;
+        gap: 25px;
+    }
+}
+
+
+/* Tablets */
+@media (max-width: 850px) {
+
+    .navbar {
+        min-height: 78px;
+    }
+
+    .menu-toggle {
+        display: grid;
+        place-items: center;
+        margin-left: auto;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 72px;
+        left: 24px;
+        right: 24px;
+        z-index: 20;
+
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+
+        padding: 12px;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: #12152f;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    }
+
+    .nav-links.open {
+        display: flex;
+        animation: fadeUp 0.25s ease both;
+    }
+
+    .nav-link {
+        display: block;
+        padding: 13px 14px;
+        border-radius: 10px;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+        background: rgba(255, 255, 255, 0.06);
+    }
+
+    .nav-actions {
+        gap: 14px;
+    }
+
+    .hero {
+        grid-template-columns: 1fr;
+        gap: 55px;
+        padding-top: 65px;
+    }
+
+    .hero-content {
+        max-width: 700px;
+    }
+
+    .hero-title {
+        font-size: clamp(44px, 8vw, 68px);
+    }
+
+    .hero-visual {
+        width: min(100%, 570px);
+        margin-inline: auto;
+    }
+
+    .dashboard-preview {
+        transform: none;
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .steps-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .step-card {
+        min-height: 190px;
+    }
+
+    .about-card {
+        grid-template-columns: 1fr;
+    }
+
+    .about-visual {
+        min-height: 300px;
+    }
+
+    .footer-content {
+        grid-template-columns: 1.4fr 1fr 1fr;
+        gap: 25px;
+    }
+}
+
+
+/* Mobile phones */
+@media (max-width: 560px) {
+
+    .section-container,
+    .navbar {
+        width: calc(100% - 32px);
+    }
+
+    .navbar {
+        min-height: 72px;
+        gap: 10px;
+    }
+
+    .brand {
+        gap: 8px;
+    }
+
+    .brand-icon {
+        width: 37px;
+        height: 37px;
+        border-radius: 11px;
+        font-size: 17px;
+    }
+
+    .brand-name {
+        font-size: 19px;
+    }
+
+    .menu-toggle {
+        width: 39px;
+        height: 39px;
+    }
+
+    .nav-actions {
+        gap: 0;
+    }
+
+    .nav-actions .login-link {
+        display: none;
+    }
+
+    .nav-cta {
+        min-height: 39px;
+        padding: 9px 11px;
+        gap: 6px;
+        font-size: 11px;
+    }
+
+    .nav-cta i {
+        display: none;
+    }
+
+    .nav-links {
+        top: 65px;
+        left: 16px;
+        right: 16px;
+    }
+
+    .hero {
+        padding-top: 50px;
+        padding-bottom: 65px;
+        gap: 45px;
+    }
+
+    .announcement {
+        max-width: 100%;
+        gap: 7px;
+        padding: 8px 10px;
+        font-size: 8px;
+        letter-spacing: 0.6px;
+    }
+
+    .hero-title {
+        font-size: clamp(38px, 10vw, 49px);
+        letter-spacing: -1.8px;
+        line-height: 1.13;
+    }
+
+    .hero-description {
+        margin-top: 19px;
+        font-size: 14px;
+        line-height: 1.8;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: stretch;
+        margin-top: 25px;
+    }
+
+    .hero-buttons .btn {
+        width: 100%;
+    }
+
+    .hero-trust {
+        margin-top: 28px;
+    }
+
+    .dashboard-preview {
+        padding: 15px;
+        border-radius: 21px;
+    }
+
+    .preview-header h3 {
+        font-size: 17px;
+    }
+
+    .balance-card {
+        padding: 17px;
+    }
+
+    .balance-card h2 {
+        font-size: 29px;
+    }
+
+    .balance-footer {
+        font-size: 9px;
+    }
+
+    .stat-card {
+        padding: 12px;
+    }
+
+    .stat-card h3 {
+        font-size: 19px;
+    }
+
+    .stat-label {
+        font-size: 10px;
+    }
+
+    .floating-notification {
+        position: relative;
+        right: auto;
+        bottom: auto;
+        margin: 14px auto 0;
+        width: 100%;
+        max-width: none;
+        animation: none;
+    }
+
+    .features-section,
+    .how-section {
+        padding-top: 60px;
+        padding-bottom: 60px;
+    }
+
+    .section-heading {
+        margin-bottom: 32px;
+    }
+
+    .section-heading h2,
+    .about-content h2 {
+        font-size: 31px;
+        letter-spacing: -0.8px;
+    }
+
+    .section-heading p {
+        font-size: 13px;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .feature-card {
+        padding: 24px;
+    }
+
+    .feature-card p {
+        min-height: auto;
+    }
+
+    .step-card {
+        padding: 25px;
+        min-height: auto;
+    }
+
+    .about-section {
+        padding-top: 40px;
+        padding-bottom: 60px;
+    }
+
+    .about-card {
+        padding: 27px 20px;
+        border-radius: 23px;
+    }
+
+    .about-content p {
+        font-size: 13px;
+    }
+
+    .about-visual {
+        min-height: 250px;
+        overflow: hidden;
+    }
+
+    .circle-one {
+        width: 210px;
+        height: 210px;
+    }
+
+    .circle-two {
+        width: 150px;
+        height: 150px;
+    }
+
+    .about-center-icon {
+        width: 85px;
+        height: 85px;
+        border-radius: 24px;
+        font-size: 32px;
+    }
+
+    .floating-card-one {
+        right: 0;
+    }
+
+    .floating-card-two {
+        left: 0;
+    }
+
+    .cta-section {
+        padding-top: 15px;
+        padding-bottom: 65px;
+    }
+
+    .cta-card {
+        padding: 45px 20px;
+        border-radius: 24px;
+    }
+
+    .cta-content h2 {
+        font-size: 31px;
+        letter-spacing: -0.8px;
+    }
+
+    .cta-content p {
+        font-size: 13px;
+    }
+
+    .cta-content .btn {
+        width: 100%;
+        padding-inline: 12px;
+        font-size: 12px;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 35px 20px;
+        padding-top: 42px;
+        padding-bottom: 35px;
+    }
+
+    .footer-brand {
+        grid-column: 1 / -1;
+    }
+
+    .footer-bottom {
+        align-items: flex-start;
+        flex-direction: column;
+        justify-content: center;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+}
+
+
+/* Very small screens */
+@media (max-width: 360px) {
+
+    .brand-name {
+        font-size: 17px;
+    }
+
+    .nav-cta {
+        padding: 8px;
+        font-size: 10px;
+    }
+
+    .hero-title {
+        font-size: 35px;
+    }
+
+    .announcement {
+        font-size: 7px;
+    }
+
+    .balance-card h2 {
+        font-size: 25px;
+    }
+
+}
+
+
+/* Respect users who prefer less animation */
+@media (prefers-reduced-motion: reduce) {
+
+    .gradient-orb,
+    .floating-notification,
+    .about-circle,
+    .gradient-text,
+    .announcement-dot {
+        animation: none !important;
+    }
+
+}

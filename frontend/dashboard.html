@@ -1,0 +1,895 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/ai-chat.css">
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#090b20">
+
+    <title>Dashboard | MicroLoanX</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body class="dashboard-page">
+
+    <div class="background-effects" aria-hidden="true">
+        <div class="gradient-orb orb-one"></div>
+        <div class="gradient-orb orb-two"></div>
+        <div class="gradient-orb orb-three"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <div class="dashboard-shell">
+
+        <!-- Sidebar -->
+
+        <aside class="sidebar" id="sidebar">
+
+            <a href="index.html" class="brand sidebar-brand">
+                <span class="brand-icon">
+                    <i class="fa-solid fa-chart-pie"></i>
+                </span>
+
+                <span class="brand-name">
+                    MicroLoan<span class="brand-highlight">X</span>
+                </span>
+            </a>
+
+            <div class="sidebar-caption">WORKSPACE</div>
+
+            <nav class="sidebar-nav" aria-label="Main navigation">
+
+                <a href="#overview" class="sidebar-link active"
+                   data-section="overview">
+                    <i class="fa-solid fa-grid-2"></i>
+                    <span>Overview</span>
+                </a>
+
+                <a href="#loans" class="sidebar-link"
+                   data-section="loans">
+                    <i class="fa-solid fa-wallet"></i>
+                    <span>My Loans</span>
+                </a>
+
+                <a href="#repayments" class="sidebar-link"
+                   data-section="repayments">
+                    <i class="fa-solid fa-money-bill-transfer"></i>
+                    <span>Repayments</span>
+                </a>
+
+                <a href="#sales" class="sidebar-link"
+                   data-section="sales">
+                    <i class="fa-solid fa-chart-column"></i>
+                    <span>Daily Sales</span>
+                </a>
+
+                <a href="#expenses" class="sidebar-link"
+                   data-section="expenses">
+                    <i class="fa-solid fa-receipt"></i>
+                    <span>Expenses</span>
+                </a>
+
+                <a href="#transactions" class="sidebar-link"
+                   data-section="transactions">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>Transactions</span>
+                </a>
+
+                <a href="#reports" class="sidebar-link"
+                   data-section="reports">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Reports</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-caption sidebar-bottom-caption">
+                PREFERENCES
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <a href="#settings" class="sidebar-link"
+                   data-section="settings">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+
+                <button type="button"
+                        class="sidebar-link logout-link"
+                        id="logoutButton">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Log Out</span>
+                </button>
+
+            </nav>
+
+            <div class="sidebar-help">
+                <div class="help-icon">
+                    <i class="fa-solid fa-headset"></i>
+                </div>
+
+                <strong>Need assistance?</strong>
+
+                <p>Keep your financial records organized.</p>
+
+                <a href="index.html#about">About MicroLoanX</a>
+            </div>
+
+        </aside>
+
+
+        <!-- Main Application -->
+
+        <main class="dashboard-main">
+
+            <header class="dashboard-topbar">
+
+                <div class="topbar-left">
+
+                    <button type="button"
+                            class="sidebar-toggle"
+                            id="sidebarToggle"
+                            aria-label="Toggle sidebar"
+                            aria-expanded="false">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+
+                    <div>
+                        <span class="topbar-eyebrow">YOUR WORKSPACE</span>
+                        <h1 id="welcomeTitle">Welcome back!</h1>
+                    </div>
+
+                </div>
+
+                <div class="topbar-actions">
+
+                    <label class="language-control">
+                        <i class="fa-solid fa-globe"></i>
+
+                        <select id="languageSelector"
+                                aria-label="Choose language">
+                            <option value="en">English</option>
+                            <option value="kn">ಕನ್ನಡ</option>
+                            <option value="hi">हिन्दी</option>
+                        </select>
+                    </label>
+
+                    <button type="button"
+                            class="icon-button"
+                            id="notificationButton"
+                            aria-label="View notifications">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="notification-dot"></span>
+                    </button>
+
+                    <div class="profile-avatar" id="profileAvatar">V</div>
+
+                </div>
+
+            </header>
+
+
+            <div class="dashboard-content">
+
+                <section class="welcome-banner" id="overview">
+
+                    <div>
+                        <span class="welcome-tag">
+                            <i class="fa-solid fa-sparkles"></i>
+                            YOUR BUSINESS AT A GLANCE
+                        </span>
+
+                        <h2>Make every rupee count.</h2>
+
+                        <p>
+                            Track your finances, plan repayments and
+                            make informed business decisions.
+                        </p>
+                    </div>
+
+                    <div class="banner-art" aria-hidden="true">
+                        <i class="fa-solid fa-store"></i>
+                        <span class="banner-orbit orbit-a"></span>
+                        <span class="banner-orbit orbit-b"></span>
+                    </div>
+
+                </section>
+
+
+                <div class="dashboard-section-heading">
+
+                    <div>
+                        <h2>Financial Overview</h2>
+                        <p>Your business summary</p>
+                    </div>
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            id="refreshButton">
+                        <i class="fa-solid fa-rotate"></i>
+                        Refresh
+                    </button>
+
+                </div>
+
+
+                <!-- Financial Summary Cards -->
+
+                <section class="summary-grid"
+                         aria-label="Financial summary">
+
+                    <article class="summary-card">
+                        <div class="summary-card-top">
+                            <span>Outstanding Loans</span>
+                            <span class="summary-icon purple">
+                                <i class="fa-solid fa-wallet"></i>
+                            </span>
+                        </div>
+
+                        <h3 id="outstandingTotal">₹0</h3>
+                        <p>Remaining loan balance</p>
+                    </article>
+
+                    <article class="summary-card">
+                        <div class="summary-card-top">
+                            <span>Total Repaid</span>
+                            <span class="summary-icon green">
+                                <i class="fa-solid fa-check-double"></i>
+                            </span>
+                        </div>
+
+                        <h3 id="repaidTotal">₹0</h3>
+                        <p>Recorded repayments</p>
+                    </article>
+
+                    <article class="summary-card">
+                        <div class="summary-card-top">
+                            <span>Today's Sales</span>
+                            <span class="summary-icon cyan">
+                                <i class="fa-solid fa-indian-rupee-sign"></i>
+                            </span>
+                        </div>
+
+                        <h3 id="salesTotal">₹0</h3>
+                        <p>Recorded sales today</p>
+                    </article>
+
+                    <article class="summary-card">
+                        <div class="summary-card-top">
+                            <span>Today's Expenses</span>
+                            <span class="summary-icon orange">
+                                <i class="fa-solid fa-receipt"></i>
+                            </span>
+                        </div>
+
+                        <h3 id="expensesTotal">₹0</h3>
+                        <p>Recorded expenses today</p>
+                    </article>
+
+                </section>
+
+
+                <!-- Quick Actions -->
+
+                <section class="dashboard-panel quick-panel">
+
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Quick Actions</h2>
+                            <p>Record a business activity</p>
+                        </div>
+                    </div>
+
+                    <div class="quick-actions">
+
+                        <button type="button"
+                                class="quick-action"
+                                data-open-modal="loanModal">
+                            <span class="quick-action-icon purple">
+                                <i class="fa-solid fa-plus"></i>
+                            </span>
+                            <span>Add Loan</span>
+                        </button>
+
+                        <button type="button"
+                                class="quick-action"
+                                data-open-modal="repaymentModal">
+                            <span class="quick-action-icon green">
+                                <i class="fa-solid fa-money-bill-transfer"></i>
+                            </span>
+                            <span>Record Repayment</span>
+                        </button>
+
+                        <button type="button"
+                                class="quick-action"
+                                data-open-modal="salesModal">
+                            <span class="quick-action-icon cyan">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </span>
+                            <span>Add Sale</span>
+                        </button>
+
+                        <button type="button"
+                                class="quick-action"
+                                data-open-modal="expenseModal">
+                            <span class="quick-action-icon orange">
+                                <i class="fa-solid fa-receipt"></i>
+                            </span>
+                            <span>Add Expense</span>
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Loans Section -->
+
+                <section class="dashboard-panel content-panel"
+                         id="loans">
+
+                    <div class="panel-heading">
+
+                        <div>
+                            <h2>My Loans</h2>
+                            <p>Track your borrowed amounts and balances</p>
+                        </div>
+
+                        <button type="button"
+                                class="btn btn-primary"
+                                data-open-modal="loanModal">
+                            <i class="fa-solid fa-plus"></i>
+                            Add Loan
+                        </button>
+
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="data-table">
+
+                            <thead>
+                                <tr>
+                                    <th>Lender</th>
+                                    <th>Principal</th>
+                                    <th>Outstanding</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="loanTableBody">
+                                <tr>
+                                    <td colspan="5" class="empty-cell">
+                                        No loans recorded yet.
+                                        Add a loan to get started.
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                </section>
+
+
+                <!-- Sales and Expenses -->
+
+                <div class="two-column-grid">
+
+                    <section class="dashboard-panel content-panel"
+                             id="sales">
+
+                        <div class="panel-heading">
+                            <div>
+                                <h2>Daily Sales</h2>
+                                <p>Track money received from customers</p>
+                            </div>
+
+                            <span class="panel-icon cyan">
+                                <i class="fa-solid fa-arrow-trend-up"></i>
+                            </span>
+                        </div>
+
+                        <form id="salesForm" class="inline-form">
+
+                            <div class="form-group">
+                                <label for="saleAmount">Sale amount (₹)</label>
+                                <input type="number"
+                                       id="saleAmount"
+                                       min="0.01"
+                                       max="1000000000"
+                                       step="0.01"
+                                       placeholder="e.g. 850"
+                                       required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="saleDescription">Description</label>
+                                <input type="text"
+                                       id="saleDescription"
+                                       maxlength="120"
+                                       placeholder="e.g. Grocery sales">
+                            </div>
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+                                Save Sale
+                            </button>
+
+                        </form>
+
+                        <div class="inline-feedback"
+                             id="salesFeedback"
+                             role="status"
+                             aria-live="polite"></div>
+
+                    </section>
+
+
+                    <section class="dashboard-panel content-panel"
+                             id="expenses">
+
+                        <div class="panel-heading">
+                            <div>
+                                <h2>Business Expenses</h2>
+                                <p>Keep track of money spent</p>
+                            </div>
+
+                            <span class="panel-icon orange">
+                                <i class="fa-solid fa-receipt"></i>
+                            </span>
+                        </div>
+
+                        <form id="expenseForm" class="inline-form">
+
+                            <div class="form-group">
+                                <label for="expenseAmount">Expense amount (₹)</label>
+                                <input type="number"
+                                       id="expenseAmount"
+                                       min="0.01"
+                                       max="1000000000"
+                                       step="0.01"
+                                       placeholder="e.g. 300"
+                                       required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="expenseDescription">Description</label>
+                                <input type="text"
+                                       id="expenseDescription"
+                                       maxlength="120"
+                                       placeholder="e.g. Stock purchase">
+                            </div>
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+                                Save Expense
+                            </button>
+
+                        </form>
+
+                        <div class="inline-feedback"
+                             id="expenseFeedback"
+                             role="status"
+                             aria-live="polite"></div>
+
+                    </section>
+
+                </div>
+
+
+                <!-- Repayments -->
+
+                <section class="dashboard-panel content-panel"
+                         id="repayments">
+
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Repayment History</h2>
+                            <p>Review repayments recorded against your loans</p>
+                        </div>
+
+                        <button type="button"
+                                class="btn btn-secondary"
+                                data-open-modal="repaymentModal">
+                            <i class="fa-solid fa-plus"></i>
+                            Record Payment
+                        </button>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="data-table">
+
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Lender</th>
+                                    <th>Amount</th>
+                                    <th>Note</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="repaymentTableBody">
+                                <tr>
+                                    <td colspan="5" class="empty-cell">
+                                        No repayments recorded yet.
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                </section>
+
+
+                <!-- Transactions -->
+
+                <section class="dashboard-panel content-panel"
+                         id="transactions">
+
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Recent Transactions</h2>
+                            <p>Your latest recorded financial activities</p>
+                        </div>
+
+                        <button type="button"
+                                class="btn btn-secondary"
+                                id="exportButton">
+                            <i class="fa-solid fa-download"></i>
+                            Export CSV
+                        </button>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="data-table">
+
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Activity</th>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="transactionTableBody">
+                                <tr>
+                                    <td colspan="4" class="empty-cell">
+                                        Your recorded transactions will appear here.
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                </section>
+
+
+                <!-- Reports -->
+
+                <section class="dashboard-panel content-panel"
+                         id="reports">
+
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Financial Reports</h2>
+                            <p>Understand your recorded business activity</p>
+                        </div>
+                    </div>
+
+                    <div class="report-grid">
+
+                        <div class="report-stat">
+                            <span>Recorded sales</span>
+                            <strong id="reportSales">₹0</strong>
+                        </div>
+
+                        <div class="report-stat">
+                            <span>Recorded expenses</span>
+                            <strong id="reportExpenses">₹0</strong>
+                        </div>
+
+                        <div class="report-stat">
+                            <span>Sales minus expenses</span>
+                            <strong id="reportNet">₹0</strong>
+                        </div>
+
+                    </div>
+
+                    <p class="report-disclaimer">
+                        Sales minus expenses is a simple operating
+                        estimate, not a complete accounting profit calculation.
+                    </p>
+
+                </section>
+
+
+                <!-- Settings -->
+
+                <section class="dashboard-panel content-panel"
+                         id="settings">
+
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Settings</h2>
+                            <p>Your account preferences</p>
+                        </div>
+                    </div>
+
+                    <div class="settings-row">
+                        <div>
+                            <strong>Preferred language</strong>
+                            <p>Choose English, Kannada or Hindi.</p>
+                        </div>
+
+                        <select id="settingsLanguage"
+                                aria-label="Preferred language">
+                            <option value="en">English</option>
+                            <option value="kn">ಕನ್ನಡ</option>
+                            <option value="hi">हिन्दी</option>
+                        </select>
+                    </div>
+
+                </section>
+
+
+                <footer class="dashboard-footer">
+                    © <span id="dashboardYear"></span> MicroLoanX.
+                    Keep your business moving forward.
+                </footer>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <!-- Loan Modal -->
+
+    <dialog class="app-modal" id="loanModal">
+        <form id="loanForm" class="modal-form">
+
+            <div class="modal-heading">
+                <div>
+                    <h2>Add a Loan</h2>
+                    <p>Record a new loan and its repayment terms.</p>
+                </div>
+
+                <button type="button"
+                        class="icon-button modal-close"
+                        aria-label="Close dialog">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="form-group">
+                <label for="lenderName">Lender name</label>
+                <input id="lenderName"
+                       maxlength="100"
+                       required
+                       placeholder="Enter lender name">
+            </div>
+
+            <div class="form-group">
+                <label for="loanAmount">Principal amount (₹)</label>
+                <input id="loanAmount"
+                       type="number"
+                       min="0.01"
+                       max="1000000000"
+                       step="0.01"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="interestRate">Annual interest rate (%)</label>
+                <input id="interestRate"
+                       type="number"
+                       min="0"
+                       max="100"
+                       step="0.01"
+                       value="0"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="loanDueDate">Repayment due date</label>
+                <input id="loanDueDate"
+                       type="date"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="loanNote">Notes (optional)</label>
+                <input id="loanNote" maxlength="300">
+            </div>
+
+            <div class="inline-feedback"
+                 id="loanFeedback"
+                 role="status"
+                 aria-live="polite"></div>
+
+            <button class="btn btn-primary auth-submit" type="submit">
+                Save Loan
+            </button>
+
+        </form>
+    </dialog>
+
+
+    <!-- Repayment Modal -->
+
+    <dialog class="app-modal" id="repaymentModal">
+        <form id="repaymentForm" class="modal-form">
+
+            <div class="modal-heading">
+                <div>
+                    <h2>Record Repayment</h2>
+                    <p>Record a payment against an existing loan.</p>
+                </div>
+
+                <button type="button"
+                        class="icon-button modal-close"
+                        aria-label="Close dialog">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="form-group">
+                <label for="repaymentLoan">Select loan</label>
+                <select id="repaymentLoan" required>
+                    <option value="">Choose a loan</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="repaymentAmount">Amount paid (₹)</label>
+                <input id="repaymentAmount"
+                       type="number"
+                       min="0.01"
+                       max="1000000000"
+                       step="0.01"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="repaymentDate">Payment date</label>
+                <input id="repaymentDate"
+                       type="date"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="repaymentNote">Note (optional)</label>
+                <input id="repaymentNote" maxlength="200">
+            </div>
+
+            <div class="inline-feedback"
+                 id="repaymentFeedback"
+                 role="status"
+                 aria-live="polite"></div>
+
+            <button class="btn btn-primary auth-submit" type="submit">
+                Save Repayment
+            </button>
+
+        </form>
+    </dialog>
+
+
+    <div class="toast-container"
+         id="toastContainer"
+         aria-live="polite"
+         aria-atomic="true"></div>
+
+    <script src="js/dashboard.js"></script>
+    
+<!-- MicroLoanX AI Assistant -->
+<button
+    id="aiChatToggle"
+    class="ai-chat-toggle"
+    type="button"
+    aria-label="Open MicroLoanX AI assistant"
+    aria-expanded="false"
+>
+    <span aria-hidden="true">✦</span>
+    <span>Ask AI</span>
+</button>
+
+<section
+    id="aiChatPanel"
+    class="ai-chat-panel"
+    aria-label="MicroLoanX AI assistant"
+    aria-hidden="true"
+    hidden
+>
+    <header class="ai-chat-header">
+        <div class="ai-chat-avatar" aria-hidden="true">✦</div>
+
+        <div class="ai-chat-heading">
+            <h2>MicroLoanX AI</h2>
+            <p>Your small business assistant</p>
+        </div>
+
+        <button
+            id="aiChatClose"
+            class="ai-chat-close"
+            type="button"
+            aria-label="Close AI assistant"
+        >×</button>
+    </header>
+
+    <div
+        id="aiChatMessages"
+        class="ai-chat-messages"
+        role="log"
+        aria-live="polite"
+        aria-relevant="additions"
+    >
+        <div class="ai-chat-message ai-chat-bot">
+            Hi! 👋 I'm your MicroLoanX assistant. Ask me about
+            budgeting, business expenses, sales, or repayment planning.
+        </div>
+    </div>
+
+    <div class="ai-chat-suggestions">
+        <button type="button" class="ai-suggestion"
+            data-question="How can I manage my business expenses?">
+            Manage expenses
+        </button>
+        <button type="button" class="ai-suggestion"
+            data-question="Give me tips for planning loan repayments.">
+            Loan repayment tips
+        </button>
+    </div>
+
+    <form id="aiChatForm" class="ai-chat-form">
+        <label class="sr-only" for="aiChatInput">Your question</label>
+
+        <textarea
+            id="aiChatInput"
+            name="message"
+            rows="1"
+            maxlength="2000"
+            placeholder="Ask MicroLoanX AI..."
+            required
+        ></textarea>
+
+        <button id="aiChatSend" type="submit">Send</button>
+    </form>
+
+    <p id="aiChatStatus" class="ai-chat-status" role="status">
+        AI responses require an available API quota.
+    </p>
+</section>
+<script src="js/ai-chat.js" defer></script>
+<div class="dashboard-banner">
+    <img src="images/dashboard.jpg" alt="Business performance overview">
+    <div>
+        <h2>Build a Stronger Business</h2>
+        <p>Track your progress and make smarter financial decisions.</p>
+    </div>
+</div>
+
+
+</body>
+</html>
