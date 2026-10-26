@@ -4,7 +4,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Loan = require("../models/loan");
-const { protect } = require("../middleware/authmiddleware");
+const protect  = require("../middleware/authmiddleware");
 const router = express.Router();
 
 // GET all loans belonging to the logged-in user
@@ -45,7 +45,7 @@ router.post("/", protect, async (req, res) => {
         }
 
         const loan = await Loan.create({
-            user: req.user._id,
+            user: req.user.id,
             lenderName,
             principalAmount,
             interestRate,
