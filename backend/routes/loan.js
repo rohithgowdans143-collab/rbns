@@ -2,22 +2,26 @@
 "use strict";
 
 const express = require("express");
-const mongoose = require("mongoose");
 const Loan = require("../models/loan");
-const protect  = require("../middleware/authMiddleware");
+const protect = require("../middleware/authMiddleware");
+
 const router = express.Router();
 
-// GET all loans belonging to the logged-in user
-app.use("/api/loans", require("./routes/loan")); {
+// GET all loans
+router.get("/", protect, async (req, res) => {
     try {
-        const loans = await Loan.find({ user: req.user.id })
-    .sort({ createdAt: -1 });
+        const loans = await Loan.find({
+            user: req.user.id
+        }).sort({ createdAt: -1 });
+
         res.json({ loans });
     } catch (error) {
         console.error("Fetch loans error:", error);
-        res.status(500).json({ message: "Failed to fetch loans" });
+        res.status(500).json({
+            message: "Failed to fetch loans"
+        });
     }
-};
+});
 
 // CREATE a loan
 router.post("/", protect, async (req, res) => {
@@ -26,7 +30,6 @@ router.post("/", protect, async (req, res) => {
             lenderName,
             principalAmount,
             interestRate,
-            outstandingBalance,
             dueDate,
             note
         } = req.body;
@@ -35,7 +38,6 @@ router.post("/", protect, async (req, res) => {
             !lenderName ||
             principalAmount === undefined ||
             interestRate === undefined ||
-            outstandingBalance === undefined ||
             !dueDate
         ) {
             return res.status(400).json({
@@ -48,7 +50,7 @@ router.post("/", protect, async (req, res) => {
             lenderName,
             principalAmount,
             interestRate,
-            outstandingBalance,
+            outstandingBalance: principalAmount,
             dueDate,
             note: note || ""
         });
@@ -60,29 +62,41 @@ router.post("/", protect, async (req, res) => {
     } catch (error) {
         console.error("Create loan error:", error);
 
-        if (error.name === "ValidationError" || error.name === "CastError") {
+        if (
+            error.name === "ValidationError" ||
+            error.name === "CastError"
+        ) {
             return res.status(400).json({
                 message: "Invalid loan details",
                 error: error.message
             });
         }
 
-        res.status(500).json({ message: "Failed to create loan" });
+        res.status(500).json({
+            message: "Failed to create loan"
+        });
     }
 });
 
 // GET dashboard summary
 router.get("/dashboard", protect, async (req, res) => {
     try {
-        const loans = await Loan.find({ user: req.user.id });
+        const loans = await Loan.find({
+            user: req.user.id
+        });
 
         const totalLoans = loans.length;
+
         const totalBorrowed = loans.reduce(
-            (sum, loan) => sum + loan.principalAmount, 0
+            (sum, loan) => sum + loan.principalAmount,
+            0
         );
+
         const totalOutstanding = loans.reduce(
-            (sum, loan) => sum + loan.outstandingBalance, 0
+            (sum, loan) => sum + loan.outstandingBalance,
+            0
         );
+
         const overdueLoans = loans.filter(
             loan => loan.status === "overdue"
         ).length;
@@ -96,6 +110,7 @@ router.get("/dashboard", protect, async (req, res) => {
         });
     } catch (error) {
         console.error("Dashboard error:", error);
+
         res.status(500).json({
             message: "Failed to load dashboard"
         });
