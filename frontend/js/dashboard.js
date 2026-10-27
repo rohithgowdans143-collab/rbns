@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!rows.length) {
             const row = document.createElement("tr");
-            row.dataset.loanId = String(loan._id);
+          
             const cell = document.createElement("td");
 
             cell.colSpan = columns.length;
@@ -212,8 +212,12 @@ document.addEventListener("DOMContentLoaded", () => {
             row.appendChild(cell);
             loanBody.appendChild(row);
         } else {
-            loans.forEach(loan => {
-                const row = document.createElement("tr");
+            lloans.forEach(loan => {
+    const row = document.createElement("tr");
+
+    row.dataset.loanId = String(loan._id);
+    row.style.cursor = "pointer";
+    row.title = "Click to view borrower details";
 
                 addCell(row, loan.lenderName);
                 addCell(row, loan.borrowerName || "—");
@@ -286,59 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 row.style.cursor = "pointer";
                 row.title = "Click to view borrower details";
 
-              row.addEventListener("click", event => {
-    if (event.target.closest("button")) return;
-
-    const borrower =
-        loan.borrower && typeof loan.borrower === "object"
-            ? loan.borrower
-            : {};
-
-    const nameElement = document.getElementById("identityName");
-    const phoneElement = document.getElementById("identityPhone");
-    const businessElement = document.getElementById("identityBusiness");
-    const statusElement = document.getElementById("identityStatus");
-
-    if (nameElement) {
-        nameElement.textContent =
-            borrower.fullName ||
-            loan.borrowerName ||
-            "Not available";
-    }
-
-    if (phoneElement) {
-        phoneElement.textContent =
-            borrower.phone ||
-            loan.borrowerPhone ||
-            "Not available";
-    }
-
-    if (businessElement) {
-        businessElement.textContent =
-            borrower.businessName ||
-            "Not available";
-    }
-
-    if (statusElement) {
-        const status =
-            borrower.identityVerification?.status || "not_started";
-
-        const labels = {
-            verified: "Verified",
-            pending: "Verification pending",
-            rejected: "Verification rejected",
-            not_started: "Not verified"
-        };
-
-        statusElement.textContent =
-            labels[status] || "Not verified";
-    }
-
-    document.getElementById("borrowerIdentity")?.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-    });
-});
+             
 
                 loanBody.appendChild(row);
             });
