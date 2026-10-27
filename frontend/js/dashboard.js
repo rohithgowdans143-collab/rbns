@@ -1,10 +1,8 @@
-
 "use strict";
 
 const API_BASE_URL = "https://rbns.onrender.com/api";
 
 document.addEventListener("DOMContentLoaded", () => {
-
     const $ = id => document.getElementById(id);
 
     const money = amount =>
@@ -43,10 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let vendor = null;
     let busy = false;
 
-    const modalIds = [
-        "loanModal",
-        "repaymentModal"
-    ];
+    const modalIds = ["loanModal", "repaymentModal"];
 
     function showToast(message, type = "success") {
         const container = $("toastContainer");
@@ -71,7 +66,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Only authenticated API responses can supply actual records.
     async function api(path, options = {}) {
         const response = await fetch(`${API_BASE_URL}${path}`, {
             ...options,
@@ -118,8 +112,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     ? "status-overdue"
                     : "status-pending");
 
-        badge.textContent = normalized.charAt(0).toUpperCase() +
-            normalized.slice(1);
+        badge.textContent =
+            normalized.charAt(0).toUpperCase() + normalized.slice(1);
 
         return badge;
     }
@@ -161,8 +155,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Display loans, repayments, sales and expenses.
     function render() {
-
         $("welcomeTitle").textContent =
             `Welcome back${vendor?.fullName
                 ? ", " + vendor.fullName.split(/\s+/)[0]
@@ -172,7 +166,8 @@ document.addEventListener("DOMContentLoaded", () => {
             (vendor?.fullName || "V").trim().charAt(0).toUpperCase();
 
         const outstanding = loans.reduce(
-            (sum, loan) => sum + Number(loan.outstandingBalance ?? 0),
+            (sum, loan) =>
+                sum + Number(loan.outstandingBalance ?? 0),
             0
         );
 
@@ -198,27 +193,159 @@ document.addEventListener("DOMContentLoaded", () => {
 
         $("reportSales").textContent = money(totalSales);
         $("reportExpenses").textContent = money(totalExpenses);
-        $("reportNet").textContent = money(totalSales - totalExpenses);
+        $("reportNet").textContent =
+            money(totalSales - totalExpenses);
 
-        renderTable(
-            "loanTableBody",
-            loans,
-            [
-                { value: x => x.lenderName },
-                { value: x => money(x.principalAmount) },
-                { value: x => money(x.outstandingBalance) },
-                { value: x => x.dueDate?.slice(0, 10) },
-                { value: x => x.status, status: true }
-            ],
-            "No loans recorded yet."
-        );
+        // Loans table: eight columns.
+        const loanBody = $("loanTableBody");
+        loanBody.replaceChildren();
 
+        if (!loans.length) {
+            const row = document.createElement("tr");
+            const cell = document.createElement("td");
+
+            cell.colSpan = 8;
+            cell.className = "empty-cell";
+            cell.textContent = "No loans recorded yet.";
+
+            row.appendChild(cell);
+            loanBody.appendChild(row);
+            
+row.style.cursor = "pointer";
+row.title = "Click to view borrower details";
+
+row.addEventListener("click", event => {
+    // Do not open the identity panel when an agreement button is clicked.
+    if (event.target.closest("button")) return;
+
+    const borrower =
+        loan.borrower && typeof loan.borrower === "object"
+            ? loan.borrower
+            : {};
+
+    const nameElement = $("identityName");
+    const phoneElement = $("identityPhone");
+    const businessElement = $("identityBusiness");
+    const statusElement = $("identityStatus");
+
+    if (nameElement) {
+        nameElement.textContent =
+            loan.borrowerName || borrower.fullName || "Not available";
+    }
+
+    if (phoneElement) {
+        phoneElement.textContent =
+            loan.borrowerPhone || borrower.phone || "Not available";
+    }
+
+    if (businessElement) {
+        businessElement.textContent =
+            borrower.businessName || "Not available";
+    }
+
+    if (statusElement) {
+        const status = borrower.identityVerification?.status || "not_started";
+
+        const labels = {
+            verified: "Verified",
+            pending: "Verification pending",
+            rejected: "Verification rejected",
+            not_started: "Not verified"
+        };
+
+        statusElement.textContent = labels[status] || "Not verified";
+    }
+
+    $("borrowerIdentity")?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+    });
+});
+
+        } else {
+            loans.forEach(loan => {
+                const row = document.createElement("tr");
+
+                addCell(row, loan.lenderName);
+                addCell(row, loan.borrowerName || "—");
+                addCell(row, money(loan.principalAmount));
+                addCell(row, money(loan.outstandingBalance));
+                addCell(row, loan.dueDate?.slice(0, 10));
+
+                const statusCell = document.createElement("td");
+                statusCell.appendChild(statusBadge(loan.status));
+                row.appendChild(statusCell);
+
+                const agreementStatus =
+                    loan.agreement?.status || "pending";
+
+                const agreementCell = document.createElement("td");
+                agreementCell.appendChild(statusBadge(agreementStatus));
+                row.appendChild(agreementCell);
+
+                const actionsCell = document.createElement("td");
+
+                const isLender =
+                    String(loan.lender) === String(vendor?._id);
+
+                const isBorrower =
+                    String(loan.borrower) === String(vendor?._id);
+
+                if (
+                    (isLender || isBorrower) &&
+                    agreementStatus !== "accepted" &&
+                    agreementStatus !== "rejected"
+                ) {
+                    const acceptButton =
+                        document.createElement("button");
+
+                    acceptButton.type = "button";
+                    acceptButton.textContent = "Accept";
+
+                    acceptButton.addEventListener("click", () => {
+                        respondToAgreement(loan._id, "accept");
+                    });
+
+                    actionsCell.appendChild(acceptButton);
+
+                    const rejectButton =
+                        document.createElement("button");
+
+                    rejectButton.type = "button";
+                    rejectButton.textContent = "Reject";
+                    rejectButton.style.marginLeft = "6px";
+
+                    rejectButton.addEventListener("click", () => {
+                        respondToAgreement(loan._id, "reject");
+                    });
+
+                    actionsCell.appendChild(rejectButton);
+                } else {
+                    actionsCell.textContent =
+                        agreementStatus === "accepted"
+                            ? "Agreed"
+                            : agreementStatus === "rejected"
+                                ? "Rejected"
+                                : "Awaiting response";
+                }
+
+                row.appendChild(actionsCell);
+                loanBody.appendChild(row);
+            });
+        }
+
+        // Repayment history.
         renderTable(
             "repaymentTableBody",
             repayments,
             [
                 { value: x => x.paymentDate?.slice(0, 10) },
-                { value: x => x.lenderName },
+                {
+                    value: x =>
+                        x.lenderName && x.borrowerName
+                            ? `${x.lenderName} / ${x.borrowerName}`
+                            : x.lenderName || x.borrowerName || "—"
+                },
                 { value: x => money(x.amount) },
                 { value: x => x.note || "Repayment" },
                 { value: () => "Paid", status: true }
@@ -226,6 +353,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "No repayments recorded yet."
         );
 
+        // Sales and expense transactions.
         renderTable(
             "transactionTableBody",
             transactions,
@@ -238,7 +366,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "No transactions recorded yet."
         );
 
-        // Populate the repayment loan selector.
+        // Populate repayment selector.
         const selector = $("repaymentLoan");
         const previousValue = selector.value;
 
@@ -254,8 +382,11 @@ document.addEventListener("DOMContentLoaded", () => {
         ).forEach(loan => {
             const option = document.createElement("option");
             option.value = loan._id;
+
             option.textContent =
-                `${loan.lenderName} — ${money(loan.outstandingBalance)}`;
+                `${loan.lenderName || loan.borrowerName || "Loan"} — ` +
+                money(loan.outstandingBalance);
+
             selector.appendChild(option);
         });
 
@@ -266,9 +397,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // Load dashboard records from the backend.
     async function loadDashboard() {
         try {
-           const data = await api("/loans/dashboard");
+            const data = await api("/loans/dashboard");
 
             vendor = data.vendor;
             loans = data.loans || [];
@@ -278,7 +410,6 @@ document.addEventListener("DOMContentLoaded", () => {
             expenses = data.expenses || [];
 
             render();
-
         } catch (error) {
             if (error.message !== "Your session has expired.") {
                 showToast(error.message, "error");
@@ -286,14 +417,87 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Open and close dialogs.
+    // Load registered users for the borrower dropdown.
+    async function loadBorrowers() {
+        const selector = $("borrowerSelect");
+
+        if (!selector) return;
+
+        try {
+            const data = await api("/loans/borrowers");
+
+            selector.replaceChildren();
+
+            const placeholder = document.createElement("option");
+            placeholder.value = "";
+            placeholder.textContent = "Select a borrower";
+            selector.appendChild(placeholder);
+
+            (data.borrowers || []).forEach(borrower => {
+                const option = document.createElement("option");
+                option.value = borrower.id;
+
+                const name = borrower.fullName || "Unnamed user";
+                const business = borrower.businessName
+                    ? ` (${borrower.businessName})`
+                    : "";
+
+                option.textContent = name + business;
+                selector.appendChild(option);
+            });
+
+            if (!data.borrowers || data.borrowers.length === 0) {
+                placeholder.textContent =
+                    "No other registered users found";
+            }
+        } catch (error) {
+            selector.replaceChildren();
+
+            const option = document.createElement("option");
+            option.value = "";
+            option.textContent = "Could not load borrowers";
+            selector.appendChild(option);
+
+            showToast(error.message, "error");
+        }
+    }
+
+    // Accept or reject a loan agreement.
+    async function respondToAgreement(loanId, decision) {
+        const confirmed = window.confirm(
+            `Are you sure you want to ${decision} this loan agreement?`
+        );
+
+        if (!confirmed) return;
+
+        try {
+            await api(
+                `/agreements/${encodeURIComponent(loanId)}/respond`,
+                {
+                    method: "POST",
+                    body: JSON.stringify({ decision })
+                }
+            );
+
+            showToast(`Agreement response recorded: ${decision}.`);
+            await loadDashboard();
+        } catch (error) {
+            showToast(error.message, "error");
+        }
+    }
+
+    // Open dialogs.
     document.querySelectorAll("[data-open-modal]").forEach(button => {
         button.addEventListener("click", () => {
             const dialog = $(button.dataset.openModal);
-            if (dialog && !dialog.open) dialog.showModal();
+
+            if (dialog && !dialog.open) {
+                dialog.showModal();
+            }
         });
     });
 
+    // Close dialogs.
     document.querySelectorAll(".modal-close").forEach(button => {
         button.addEventListener("click", () => {
             button.closest("dialog")?.close();
@@ -303,12 +507,14 @@ document.addEventListener("DOMContentLoaded", () => {
     modalIds.forEach(id => {
         const dialog = $(id);
 
-        dialog.addEventListener("click", event => {
-            if (event.target === dialog) dialog.close();
-        });
+        if (dialog) {
+            dialog.addEventListener("click", event => {
+                if (event.target === dialog) dialog.close();
+            });
+        }
     });
 
-    // Add a loan.
+    // Create a loan.
     $("loanForm").addEventListener("submit", async event => {
         event.preventDefault();
 
@@ -316,10 +522,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const amount = Number($("loanAmount").value);
         const rate = Number($("interestRate").value);
         const dueDate = $("loanDueDate").value;
+        const borrowerId = $("borrowerSelect").value;
 
         if (busy || !form.reportValidity()) return;
 
         if (
+            !borrowerId ||
             !Number.isFinite(amount) ||
             amount <= 0 ||
             amount > 1000000000 ||
@@ -328,7 +536,11 @@ document.addEventListener("DOMContentLoaded", () => {
             rate > 100 ||
             dueDate < today()
         ) {
-            feedback("loanFeedback", "Check the loan amount, interest rate and due date.", true);
+            feedback(
+                "loanFeedback",
+                "Check the borrower, amount, interest rate and due date.",
+                true
+            );
             return;
         }
 
@@ -339,7 +551,7 @@ document.addEventListener("DOMContentLoaded", () => {
             await api("/loans", {
                 method: "POST",
                 body: JSON.stringify({
-                    lenderName: $("lenderName").value.trim(),
+                    borrowerId,
                     principalAmount: amount,
                     interestRate: rate,
                     dueDate,
@@ -354,7 +566,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             showToast("Loan recorded successfully.");
             await loadDashboard();
-
+            await loadBorrowers();
         } catch (error) {
             feedback("loanFeedback", error.message, true);
         } finally {
@@ -377,7 +589,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const loan = loans.find(item => item._id === loanId);
 
         if (!loan) {
-            feedback("repaymentFeedback", "Please select a valid loan.", true);
+            feedback(
+                "repaymentFeedback",
+                "Please select a valid loan.",
+                true
+            );
             return;
         }
 
@@ -415,7 +631,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             showToast("Repayment recorded successfully.");
             await loadDashboard();
-
         } catch (error) {
             feedback("repaymentFeedback", error.message, true);
         } finally {
@@ -424,7 +639,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Record daily sales or business expenses.
+    // Save a sale or expense.
     async function saveTransaction(type, amount, description) {
         return api("/transactions", {
             method: "POST",
@@ -437,6 +652,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Record daily sales.
     $("salesForm").addEventListener("submit", async event => {
         event.preventDefault();
 
@@ -452,7 +668,11 @@ document.addEventListener("DOMContentLoaded", () => {
             amount > 1000000000 ||
             !description
         ) {
-            feedback("salesFeedback", "Enter a valid amount and description.", true);
+            feedback(
+                "salesFeedback",
+                "Enter a valid amount and description.",
+                true
+            );
             return;
         }
 
@@ -465,7 +685,6 @@ document.addEventListener("DOMContentLoaded", () => {
             feedback("salesFeedback", "Sale recorded successfully.");
             showToast("Daily sale saved.");
             await loadDashboard();
-
         } catch (error) {
             feedback("salesFeedback", error.message, true);
         } finally {
@@ -473,6 +692,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // Record business expenses.
     $("expenseForm").addEventListener("submit", async event => {
         event.preventDefault();
 
@@ -488,7 +708,11 @@ document.addEventListener("DOMContentLoaded", () => {
             amount > 1000000000 ||
             !description
         ) {
-            feedback("expenseFeedback", "Enter a valid amount and description.", true);
+            feedback(
+                "expenseFeedback",
+                "Enter a valid amount and description.",
+                true
+            );
             return;
         }
 
@@ -498,10 +722,12 @@ document.addEventListener("DOMContentLoaded", () => {
             await saveTransaction("expense", amount, description);
 
             form.reset();
-            feedback("expenseFeedback", "Expense recorded successfully.");
+            feedback(
+                "expenseFeedback",
+                "Expense recorded successfully."
+            );
             showToast("Business expense saved.");
             await loadDashboard();
-
         } catch (error) {
             feedback("expenseFeedback", error.message, true);
         } finally {
@@ -509,11 +735,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Export records to a CSV file.
+    // Export transactions as CSV.
     $("exportButton").addEventListener("click", () => {
-
         if (!transactions.length) {
-            showToast("There are no transactions to export.", "error");
+            showToast(
+                "There are no transactions to export.",
+                "error"
+            );
             return;
         }
 
@@ -535,7 +763,9 @@ document.addEventListener("DOMContentLoaded", () => {
             .join("\r\n");
 
         const url = URL.createObjectURL(
-            new Blob([csv], { type: "text/csv;charset=utf-8;" })
+            new Blob([csv], {
+                type: "text/csv;charset=utf-8;"
+            })
         );
 
         const link = document.createElement("a");
@@ -546,7 +776,7 @@ document.addEventListener("DOMContentLoaded", () => {
         URL.revokeObjectURL(url);
     });
 
-    // Refresh from the server.
+    // Refresh dashboard.
     $("refreshButton").addEventListener("click", loadDashboard);
 
     // Mobile sidebar.
@@ -560,7 +790,10 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     });
 
-    document.querySelectorAll(".sidebar-link[data-section]").forEach(link => {
+    // Sidebar navigation.
+    document.querySelectorAll(
+        ".sidebar-link[data-section]"
+    ).forEach(link => {
         link.addEventListener("click", () => {
             document.querySelectorAll(".sidebar-link").forEach(item => {
                 item.classList.remove("active");
@@ -568,11 +801,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
             link.classList.add("active");
             $("sidebar").classList.remove("open");
-            $("sidebarToggle").setAttribute("aria-expanded", "false");
+            $("sidebarToggle").setAttribute(
+                "aria-expanded",
+                "false"
+            );
         });
     });
 
-    // Language preference selector.
+    // Language selector.
     $("languageSelector").addEventListener("change", event => {
         $("settingsLanguage").value = event.target.value;
 
@@ -585,25 +821,25 @@ document.addEventListener("DOMContentLoaded", () => {
         $("languageSelector").value = event.target.value;
     });
 
-    // Notification placeholder.
+    // Notifications placeholder.
     $("notificationButton").addEventListener("click", () => {
         showToast(
             "Repayment notifications will appear here when the reminder feature is connected."
         );
     });
 
-    // Logout invalidates the server session.
+    // Logout.
     $("logoutButton").addEventListener("click", async () => {
         try {
             await api("/auth/logout", { method: "POST" });
         } catch {
-            // Navigate away even if the session has already expired.
+            // Navigate away even if the session has expired.
         }
 
         window.location.replace("login.html");
     });
 
-    // Load real records from the authenticated backend.
+    // Load data when the page opens.
     loadDashboard();
-
+    loadBorrowers();
 });

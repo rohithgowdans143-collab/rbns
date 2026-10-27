@@ -1071,3 +1071,43 @@ body.dashboard-page dialog.app-modal button:disabled {
     opacity: 1 !important;
     cursor: not-allowed !important;
 }
+
+/* Borrower identity and verification panel */
+.identity-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.identity-item {
+    padding: 16px;
+    border: 1px solid rgba(150, 160, 210, 0.2);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-wrap: anywhere;
+}
+
+.identity-item span {
+    font-size: 0.85rem;
+    opacity: 0.75;
+}
+
+.identity-item strong {
+    font-size: 1rem;
+}
+
+.identity-notice {
+    margin-top: 16px;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    opacity: 0.8;
+}
+
+@media (max-width: 600px) {
+    .identity-grid {
+        grid-template-columns: 1fr;
+    }
+}

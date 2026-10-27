@@ -9,6 +9,7 @@ const User = require("../models/user");
 const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
+
 const cookieOptions = {
     httpOnly: true,
     secure: true,
@@ -40,11 +41,20 @@ function publicUser(user) {
         businessName: user.businessName,
         email: user.email,
         phone: user.phone,
+        phoneVerified: user.phoneVerified,
+        address: user.address || "",
+        city: user.city || "",
+        state: user.state || "",
+        pincode: user.pincode || "",
+        identityVerification: {
+            status: user.identityVerification?.status || "not_started",
+            verifiedAt: user.identityVerification?.verifiedAt || null
+        },
         language: user.language
     };
 }
 
-// Register a vendor.
+// Register a user.
 router.post("/register", async (req, res, next) => {
     try {
         const {
@@ -53,7 +63,11 @@ router.post("/register", async (req, res, next) => {
             email,
             phone,
             language,
-            password
+            password,
+            address,
+            city,
+            state,
+            pincode
         } = req.body || {};
 
         if (
@@ -71,6 +85,7 @@ router.post("/register", async (req, res, next) => {
         const cleanName = fullName.trim();
         const cleanBusiness = businessName.trim();
         const cleanEmail = email.trim().toLowerCase();
+        const cleanPhone = phone.trim();
 
         if (
             cleanName.length < 2 ||
@@ -92,7 +107,7 @@ router.post("/register", async (req, res, next) => {
             });
         }
 
-        if (!/^[6-9]\d{9}$/.test(phone)) {
+        if (!/^[6-9]\d{9}$/.test(cleanPhone)) {
             return res.status(400).json({
                 message: "Enter a valid 10-digit Indian mobile number."
             });
@@ -118,6 +133,37 @@ router.post("/register", async (req, res, next) => {
             });
         }
 
+        const optionalFields = {
+            address: typeof address === "string" ? address.trim() : "",
+            city: typeof city === "string" ? city.trim() : "",
+            state: typeof state === "string" ? state.trim() : ""
+        };
+
+        if (
+            optionalFields.address.length > 300 ||
+            optionalFields.city.length > 80 ||
+            optionalFields.state.length > 80
+        ) {
+            return res.status(400).json({
+                message: "Please check your address details."
+            });
+        }
+
+        let cleanPincode;
+
+        if (pincode !== undefined && pincode !== "") {
+            if (
+                typeof pincode !== "string" ||
+                !/^\d{6}$/.test(pincode.trim())
+            ) {
+                return res.status(400).json({
+                    message: "Enter a valid 6-digit PIN code."
+                });
+            }
+
+            cleanPincode = pincode.trim();
+        }
+
         const existing = await User.findOne({
             email: cleanEmail
         }).lean();
@@ -137,12 +183,17 @@ router.post("/register", async (req, res, next) => {
                 fullName: cleanName,
                 businessName: cleanBusiness,
                 email: cleanEmail,
-                phone,
+                phone: cleanPhone,
                 language: selectedLanguage,
-                passwordHash
+                passwordHash,
+                ...optionalFields,
+                ...(cleanPincode ? { pincode: cleanPincode } : {}),
+                phoneVerified: false,
+                identityVerification: {
+                    status: "not_started"
+                }
             });
         } catch (error) {
-            // The unique index also protects against concurrent registrations.
             if (error.code === 11000) {
                 return res.status(409).json({
                     message: "An account with this email already exists."
@@ -156,14 +207,12 @@ router.post("/register", async (req, res, next) => {
             message: "Account created successfully. Please sign in.",
             user: publicUser(user)
         });
-
     } catch (error) {
         next(error);
     }
 });
 
-
-// Sign in a vendor.
+// Sign in a user.
 router.post("/login", async (req, res, next) => {
     try {
         const { email, password } = req.body || {};
@@ -206,14 +255,12 @@ router.post("/login", async (req, res, next) => {
             message: "Login successful.",
             user: publicUser(user)
         });
-
     } catch (error) {
         next(error);
     }
 });
 
-
-// Return the current signed-in vendor.
+// Return the current signed-in user.
 router.get("/me", authMiddleware, async (req, res, next) => {
     try {
         const user = await User.findById(req.user.id);
@@ -227,16 +274,12 @@ router.get("/me", authMiddleware, async (req, res, next) => {
         return res.json({
             user: publicUser(user)
         });
-
     } catch (error) {
         next(error);
     }
 });
 
-
 // Log out by clearing the authentication cookie.
-
- // Log out by clearing the authentication cookie.
 router.post("/logout", (req, res) => {
     res.clearCookie("microloanx_session", {
         httpOnly: true,
@@ -249,6 +292,5 @@ router.post("/logout", (req, res) => {
         message: "Logged out successfully."
     });
 });
-
 
 module.exports = router;

@@ -36,6 +36,65 @@ const userSchema = new mongoose.Schema(
             match: /^[6-9]\d{9}$/
         },
 
+        phoneVerified: {
+            type: Boolean,
+            default: false
+        },
+
+        address: {
+            type: String,
+            trim: true,
+            maxlength: 300,
+            default: ""
+        },
+
+        city: {
+            type: String,
+            trim: true,
+            maxlength: 80,
+            default: ""
+        },
+
+        state: {
+            type: String,
+            trim: true,
+            maxlength: 80,
+            default: ""
+        },
+
+        pincode: {
+            type: String,
+            match: /^\d{6}$/,
+            default: undefined
+        },
+
+        identityVerification: {
+            status: {
+                type: String,
+                enum: ["not_started", "pending", "verified", "rejected"],
+                default: "not_started"
+            },
+
+            provider: {
+                type: String,
+                trim: true,
+                maxlength: 100,
+                default: ""
+            },
+
+            referenceId: {
+                type: String,
+                trim: true,
+                maxlength: 200,
+                default: ""
+            },
+
+            verifiedAt: {
+                type: Date,
+                default: null
+            }
+        },
+
         language: {
             type: String,
             enum: ["en", "kn", "hi"],
