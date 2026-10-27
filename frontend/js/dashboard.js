@@ -210,58 +210,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             row.appendChild(cell);
             loanBody.appendChild(row);
-            
-row.style.cursor = "pointer";
-row.title = "Click to view borrower details";
-
-row.addEventListener("click", event => {
-    // Do not open the identity panel when an agreement button is clicked.
-    if (event.target.closest("button")) return;
-
-    const borrower =
-        loan.borrower && typeof loan.borrower === "object"
-            ? loan.borrower
-            : {};
-
-    const nameElement = $("identityName");
-    const phoneElement = $("identityPhone");
-    const businessElement = $("identityBusiness");
-    const statusElement = $("identityStatus");
-
-    if (nameElement) {
-        nameElement.textContent =
-            loan.borrowerName || borrower.fullName || "Not available";
-    }
-
-    if (phoneElement) {
-        phoneElement.textContent =
-            loan.borrowerPhone || borrower.phone || "Not available";
-    }
-
-    if (businessElement) {
-        businessElement.textContent =
-            borrower.businessName || "Not available";
-    }
-
-    if (statusElement) {
-        const status = borrower.identityVerification?.status || "not_started";
-
-        const labels = {
-            verified: "Verified",
-            pending: "Verification pending",
-            rejected: "Verification rejected",
-            not_started: "Not verified"
-        };
-
-        statusElement.textContent = labels[status] || "Not verified";
-    }
-
-    $("borrowerIdentity")?.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest"
-    });
-});
-
         } else {
             loans.forEach(loan => {
                 const row = document.createElement("tr");
@@ -286,10 +234,12 @@ row.addEventListener("click", event => {
                 const actionsCell = document.createElement("td");
 
                 const isLender =
-                    String(loan.lender) === String(vendor?._id);
+                    String(loan.lender?._id || loan.lender) ===
+                    String(vendor?._id);
 
                 const isBorrower =
-                    String(loan.borrower) === String(vendor?._id);
+                    String(loan.borrower?._id || loan.borrower) ===
+                    String(vendor?._id);
 
                 if (
                     (isLender || isBorrower) &&
@@ -330,10 +280,68 @@ row.addEventListener("click", event => {
                 }
 
                 row.appendChild(actionsCell);
+
+                // Click a loan row to display its borrower details.
+                row.style.cursor = "pointer";
+                row.title = "Click to view borrower details";
+
+              row.addEventListener("click", event => {
+    if (event.target.closest("button")) return;
+
+    const borrower =
+        loan.borrower && typeof loan.borrower === "object"
+            ? loan.borrower
+            : {};
+
+    const nameElement = document.getElementById("identityName");
+    const phoneElement = document.getElementById("identityPhone");
+    const businessElement = document.getElementById("identityBusiness");
+    const statusElement = document.getElementById("identityStatus");
+
+    if (nameElement) {
+        nameElement.textContent =
+            borrower.fullName ||
+            loan.borrowerName ||
+            "Not available";
+    }
+
+    if (phoneElement) {
+        phoneElement.textContent =
+            borrower.phone ||
+            loan.borrowerPhone ||
+            "Not available";
+    }
+
+    if (businessElement) {
+        businessElement.textContent =
+            borrower.businessName ||
+            "Not available";
+    }
+
+    if (statusElement) {
+        const status =
+            borrower.identityVerification?.status || "not_started";
+
+        const labels = {
+            verified: "Verified",
+            pending: "Verification pending",
+            rejected: "Verification rejected",
+            not_started: "Not verified"
+        };
+
+        statusElement.textContent =
+            labels[status] || "Not verified";
+    }
+
+    document.getElementById("borrowerIdentity")?.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+});
+
                 loanBody.appendChild(row);
             });
         }
-
         // Repayment history.
         renderTable(
             "repaymentTableBody",
