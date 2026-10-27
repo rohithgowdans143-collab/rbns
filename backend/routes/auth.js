@@ -9,11 +9,10 @@ const User = require("../models/user");
 const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
-
 const cookieOptions = {
     httpOnly: true,
-    secure: process.env.COOKIE_SECURE === "true",
-    sameSite: "lax",
+    secure: true,
+    sameSite: "none",
     path: "/",
     maxAge: 1000 * 60 * 60 * 8
 };
@@ -236,11 +235,13 @@ router.get("/me", authMiddleware, async (req, res, next) => {
 
 
 // Log out by clearing the authentication cookie.
+
+ // Log out by clearing the authentication cookie.
 router.post("/logout", (req, res) => {
     res.clearCookie("microloanx_session", {
         httpOnly: true,
-        secure: process.env.COOKIE_SECURE === "true",
-        sameSite: "lax",
+        secure: true,
+        sameSite: "none",
         path: "/"
     });
 
@@ -248,5 +249,6 @@ router.post("/logout", (req, res) => {
         message: "Logged out successfully."
     });
 });
+
 
 module.exports = router;
