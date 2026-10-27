@@ -124,6 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!rows.length) {
             const row = document.createElement("tr");
+            row.dataset.loanId = String(loan._id);
             const cell = document.createElement("td");
 
             cell.colSpan = columns.length;
@@ -406,6 +407,55 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Load dashboard records from the backend.
+    
+    // Show borrower details when a loan row is clicked.
+    $("loanTableBody").addEventListener("click", event => {
+        if (event.target.closest("button")) return;
+
+        const row = event.target.closest("tr[data-loan-id]");
+        if (!row) return;
+
+        const loan = loans.find(
+            item => String(item._id) === row.dataset.loanId
+        );
+
+        if (!loan) {
+            showToast("Could not find this loan. Refresh and try again.", "error");
+            return;
+        }
+
+        const borrower =
+            loan.borrower && typeof loan.borrower === "object"
+                ? loan.borrower
+                : {};
+
+        $("identityName").textContent =
+            borrower.fullName || loan.borrowerName || "Not available";
+
+        $("identityPhone").textContent =
+            borrower.phone || loan.borrowerPhone || "Not available";
+
+        $("identityBusiness").textContent =
+            borrower.businessName || "Not available";
+
+        const status = borrower.identityVerification?.status || "not_started";
+
+        const labels = {
+            verified: "Verified",
+            pending: "Verification pending",
+            rejected: "Verification rejected",
+            not_started: "Not verified"
+        };
+
+        $("identityStatus").textContent =
+            labels[status] || "Not verified";
+
+        $("borrowerIdentity").scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+    });
+
     async function loadDashboard() {
         try {
             const data = await api("/loans/dashboard");
