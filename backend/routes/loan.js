@@ -22,29 +22,46 @@ function visibleTo(userId) {
     };
 }
 
-// GET loans belonging to, provided by, or received by the signed-in user.
+// Populate only the profile fields needed by the loan dashboard.
+const loanPopulation = [
+    {
+        path: "lender",
+        select: "fullName businessName phone phoneVerified identityVerification"
+    },
+    {
+        path: "borrower",
+        select: "fullName businessName phone phoneVerified identityVerification"
+    }
+];
+
+// GET loans visible to the signed-in user.
 router.get("/", protect, async (req, res) => {
     try {
         const loans = await Loan.find(
             visibleTo(req.user.id)
-        ).sort({ createdAt: -1 });
+        )
+            .populate(loanPopulation)
+            .sort({ createdAt: -1 })
+            .lean();
 
         return res.json({ loans });
     } catch (error) {
         console.error("Fetch loans error:", error);
+
         return res.status(500).json({
             message: "Failed to fetch loans."
         });
     }
 });
 
-/* GET registered users for the borrower selector */
+// GET registered users for the borrower selector.
+// Do not expose phone numbers or identity-verification details here.
 router.get("/borrowers", protect, async (req, res) => {
     try {
         const users = await User.find({
             _id: { $ne: req.user.id }
         })
-            .select("fullName businessName phone phoneVerified")
+            .select("fullName businessName")
             .sort({ fullName: 1 })
             .limit(200)
             .lean();
@@ -53,20 +70,17 @@ router.get("/borrowers", protect, async (req, res) => {
             borrowers: users.map(user => ({
                 id: String(user._id),
                 fullName: user.fullName,
-                businessName: user.businessName,
-                phone: user.phone,
-                phoneVerified: user.phoneVerified === true
+                businessName: user.businessName
             }))
         });
     } catch (error) {
         console.error("Fetch borrowers error:", error);
+
         return res.status(500).json({
             message: "Failed to load registered borrowers."
         });
     }
 });
-
-
 
 // CREATE a loan linked to a registered borrower.
 router.post("/", protect, async (req, res) => {
@@ -79,16 +93,20 @@ router.post("/", protect, async (req, res) => {
             note
         } = req.body || {};
 
+        const amount = Number(principalAmount);
+        const rate = Number(interestRate);
+
         if (
             typeof borrowerId !== "string" ||
             !mongoose.isValidObjectId(borrowerId) ||
-            !Number.isFinite(Number(principalAmount)) ||
-            Number(principalAmount) <= 0 ||
-            Number(principalAmount) > 1000000000 ||
-            !Number.isFinite(Number(interestRate)) ||
-            Number(interestRate) < 0 ||
-            Number(interestRate) > 100 ||
-            !dueDate ||
+            !Number.isFinite(amount) ||
+            amount <= 0 ||
+            amount > 1000000000 ||
+            !Number.isFinite(rate) ||
+            rate < 0 ||
+            rate > 100 ||
+            typeof dueDate !== "string" ||
+            !/^\d{4}-\d{2}-\d{2}$/.test(dueDate) ||
             Number.isNaN(Date.parse(dueDate)) ||
             (note !== undefined && typeof note !== "string") ||
             (typeof note === "string" && note.length > 300)
@@ -107,8 +125,10 @@ router.post("/", protect, async (req, res) => {
         }
 
         const [lender, borrower] = await Promise.all([
-            User.findById(lenderId).select("fullName businessName phone"),
-            User.findById(borrowerId).select("fullName businessName phone")
+            User.findById(lenderId)
+                .select("fullName businessName phone"),
+            User.findById(borrowerId)
+                .select("fullName businessName phone")
         ]);
 
         if (!lender) {
@@ -124,7 +144,7 @@ router.post("/", protect, async (req, res) => {
         }
 
         const loan = await Loan.create({
-            // Keep this field for compatibility with existing code.
+            // Retain the legacy field for compatibility.
             user: lender._id,
 
             lender: lender._id,
@@ -134,10 +154,10 @@ router.post("/", protect, async (req, res) => {
             borrowerName: borrower.fullName,
             borrowerPhone: borrower.phone,
 
-            principalAmount: Number(principalAmount),
-            interestRate: Number(interestRate),
-            outstandingBalance: Number(principalAmount),
-            dueDate: new Date(dueDate),
+            principalAmount: amount,
+            interestRate: rate,
+            outstandingBalance: amount,
+            dueDate: new Date(`${dueDate}T12:00:00.000Z`),
             note: typeof note === "string" ? note.trim() : "",
 
             status: "pending",
@@ -156,12 +176,17 @@ router.post("/", protect, async (req, res) => {
             }]
         });
 
+        const populatedLoan = await Loan.findById(loan._id)
+            .populate(loanPopulation)
+            .lean();
+
         return res.status(201).json({
             message: "Loan created. It is awaiting agreement acceptance.",
-            loan
+            loan: populatedLoan
         });
     } catch (error) {
         console.error("Create loan error:", error);
+
         return res.status(500).json({
             message: "Failed to create loan."
         });
@@ -174,30 +199,40 @@ router.get("/dashboard", protect, async (req, res) => {
         const userId = req.user.id;
 
         const [vendor, loans, transactions] = await Promise.all([
-            User.findById(userId).select("fullName"),
-            Loan.find(visibleTo(userId)).sort({ createdAt: -1 }),
-            Transaction.find({ user: userId }).sort({ date: -1 })
+            User.findById(userId)
+                .select("fullName businessName")
+                .lean(),
+
+            Loan.find(visibleTo(userId))
+                .populate(loanPopulation)
+                .sort({ createdAt: -1 })
+                .lean(),
+
+            Transaction.find({ user: userId })
+                .sort({ date: -1 })
+                .lean()
         ]);
 
-        // Include repayments for loans involving this user.
+        // Load repayments for this user's loans.
         const loanIds = loans.map(loan => loan._id);
 
-        const repayments = loanIds.length
-            ? await Repayment.find({
+        const repaymentQuery = loanIds.length
+            ? {
                 $or: [
                     { user: userId },
                     { loan: { $in: loanIds } }
                 ]
-            })
-                .populate("loan", "lenderName borrowerName")
-                .sort({ paymentDate: -1 })
-            : await Repayment.find({ user: userId })
-                .populate("loan", "lenderName borrowerName")
-                .sort({ paymentDate: -1 });
+            }
+            : { user: userId };
+
+        const repayments = await Repayment.find(repaymentQuery)
+            .populate("loan", "lenderName borrowerName")
+            .sort({ paymentDate: -1 })
+            .lean();
 
         const repaymentRows = repayments.map(item => ({
             _id: item._id,
-            loanId: item.loan?._id,
+            loanId: item.loan?._id || item.loan || null,
             lenderName: item.loan?.lenderName || "Unknown loan",
             borrowerName: item.loan?.borrowerName || "",
             amount: item.amount,
@@ -214,7 +249,16 @@ router.get("/dashboard", protect, async (req, res) => {
         );
 
         return res.json({
-            vendor: vendor ? { fullName: vendor.fullName } : null,
+            // Include _id because the frontend uses it to identify
+            // whether the signed-in user is the lender or borrower.
+            vendor: vendor
+                ? {
+                    _id: String(vendor._id),
+                    fullName: vendor.fullName,
+                    businessName: vendor.businessName
+                }
+                : null,
+
             loans,
             repayments: repaymentRows,
             transactions,
@@ -223,6 +267,7 @@ router.get("/dashboard", protect, async (req, res) => {
         });
     } catch (error) {
         console.error("Dashboard error:", error);
+
         return res.status(500).json({
             message: "Failed to load dashboard."
         });
