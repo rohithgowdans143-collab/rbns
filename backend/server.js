@@ -80,6 +80,8 @@ const aiLimiter = rateLimit({
 app.use("/api/auth", authLimiter, authRoutes);
 app.use("/api/ai", aiLimiter, aiRoutes);
 app.use("/api/loans", require("./routes/loan"));
+app.use("/api/repayments", require("./routes/repayment"));
+app.use("/api/transactions", require("./routes/transaction"));
 
 // Handle unknown endpoints
 app.use((req, res) => {

@@ -3,6 +3,9 @@
 
 const express = require("express");
 const Loan = require("../models/loan");
+const Repayment = require("../models/repayment");
+const Transaction = require("../models/transaction");
+const User = require("../models/user");
 const protect = require("../middleware/authMiddleware");
 
 const router = express.Router();
@@ -18,7 +21,7 @@ router.get("/", protect, async (req, res) => {
     } catch (error) {
         console.error("Fetch loans error:", error);
         res.status(500).json({
-            message: "Failed to fetch loans"
+            message: "Failed to fetch loans."
         });
     }
 });
@@ -32,87 +35,86 @@ router.post("/", protect, async (req, res) => {
             interestRate,
             dueDate,
             note
-        } = req.body;
+        } = req.body || {};
 
         if (
-            !lenderName ||
-            principalAmount === undefined ||
-            interestRate === undefined ||
-            !dueDate
+            typeof lenderName !== "string" ||
+            !lenderName.trim() ||
+            !Number.isFinite(Number(principalAmount)) ||
+            Number(principalAmount) <= 0 ||
+            !Number.isFinite(Number(interestRate)) ||
+            Number(interestRate) < 0 ||
+            Number(interestRate) > 100 ||
+            !dueDate ||
+            Number.isNaN(Date.parse(dueDate))
         ) {
             return res.status(400).json({
-                message: "Please provide all required loan fields"
+                message: "Please provide valid loan details."
             });
         }
 
         const loan = await Loan.create({
             user: req.user.id,
-            lenderName,
-            principalAmount,
-            interestRate,
-            outstandingBalance: principalAmount,
-            dueDate,
-            note: note || ""
+            lenderName: lenderName.trim(),
+            principalAmount: Number(principalAmount),
+            interestRate: Number(interestRate),
+            outstandingBalance: Number(principalAmount),
+            dueDate: new Date(dueDate),
+            note: typeof note === "string" ? note.trim() : ""
         });
 
         res.status(201).json({
-            message: "Loan created successfully",
+            message: "Loan created successfully.",
             loan
         });
     } catch (error) {
         console.error("Create loan error:", error);
-
-        if (
-            error.name === "ValidationError" ||
-            error.name === "CastError"
-        ) {
-            return res.status(400).json({
-                message: "Invalid loan details",
-                error: error.message
-            });
-        }
-
         res.status(500).json({
-            message: "Failed to create loan"
+            message: "Failed to create loan."
         });
     }
 });
 
-// GET dashboard summary
+// GET dashboard data
 router.get("/dashboard", protect, async (req, res) => {
     try {
-        const loans = await Loan.find({
-            user: req.user.id
-        });
+        const userId = req.user.id;
 
-        const totalLoans = loans.length;
+        const [vendor, loans, repayments, transactions] =
+            await Promise.all([
+                User.findById(userId).select("fullName"),
+                Loan.find({ user: userId }).sort({ createdAt: -1 }),
+                Repayment.find({ user: userId })
+                    .populate("loan", "lenderName")
+                    .sort({ paymentDate: -1 }),
+                Transaction.find({ user: userId })
+                    .sort({ date: -1 })
+            ]);
 
-        const totalBorrowed = loans.reduce(
-            (sum, loan) => sum + loan.principalAmount,
-            0
-        );
+        const repaymentRows = repayments.map(item => ({
+            _id: item._id,
+            loanId: item.loan?._id,
+            lenderName: item.loan?.lenderName || "Unknown loan",
+            amount: item.amount,
+            paymentDate: item.paymentDate,
+            note: item.note
+        }));
 
-        const totalOutstanding = loans.reduce(
-            (sum, loan) => sum + loan.outstandingBalance,
-            0
-        );
-
-        const overdueLoans = loans.filter(
-            loan => loan.status === "overdue"
-        ).length;
+        const sales = transactions.filter(item => item.type === "sale");
+        const expenses = transactions.filter(item => item.type === "expense");
 
         res.json({
-            totalLoans,
-            totalBorrowed,
-            totalOutstanding,
-            overdueLoans,
-            loans
+            vendor: vendor ? { fullName: vendor.fullName } : null,
+            loans,
+            repayments: repaymentRows,
+            transactions,
+            sales,
+            expenses
         });
     } catch (error) {
         console.error("Dashboard error:", error);
-
         res.status(500).json({
-            message: "Failed to load dashboard"
+            message: "Failed to load dashboard."
         });
     }
 });
