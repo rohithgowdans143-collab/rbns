@@ -214,6 +214,9 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             lloans.forEach(loan => {
     const row = document.createElement("tr");
+    row.dataset.loanId = String(loan._id);
+row.style.cursor = "pointer";
+row.title = "Click to view borrower details";
 
     row.dataset.loanId = String(loan._id);
     row.style.cursor = "pointer";
