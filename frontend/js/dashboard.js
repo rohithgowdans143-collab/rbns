@@ -212,15 +212,12 @@ document.addEventListener("DOMContentLoaded", () => {
             row.appendChild(cell);
             loanBody.appendChild(row);
         } else {
-            lloans.forEach(loan => {
-    const row = document.createElement("tr");
-    row.dataset.loanId = String(loan._id);
-row.style.cursor = "pointer";
-row.title = "Click to view borrower details";
+            loans.forEach(loan => {
+        const row = document.createElement("tr");
 
-    row.dataset.loanId = String(loan._id);
-    row.style.cursor = "pointer";
-    row.title = "Click to view borrower details";
+        row.dataset.loanId = String(loan._id);
+        row.style.cursor = "pointer";
+        row.title = "Click to view borrower details";
 
                 addCell(row, loan.lenderName);
                 addCell(row, loan.borrowerName || "—");
