@@ -66,6 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // API helper using cookie-based authentication.
     async function api(path, options = {}) {
         const response = await fetch(`${API_BASE_URL}${path}`, {
             ...options,
@@ -93,6 +94,121 @@ document.addEventListener("DOMContentLoaded", () => {
 
         return data;
     }
+
+    // ===== My KYC panel =====
+    function displayKycStatus(elementId, status) {
+        const element = $(elementId);
+        if (!element) return;
+
+        const labels = {
+            not_started: "Not started",
+            pending: "Pending verification",
+            verified: "Verified",
+            rejected: "Verification rejected"
+        };
+
+        element.textContent = labels[status] || "Unknown";
+    }
+
+    async function loadMyKyc() {
+        const message = $("myKycFeedback");
+        const refreshButton = $("refreshKycButton");
+
+        if (refreshButton) refreshButton.disabled = true;
+
+        try {
+            const result = await api("/identity/status");
+            const kyc = result.kyc || {};
+
+            displayKycStatus("myAadhaarStatus", kyc.aadhaar?.status);
+            displayKycStatus("myPanStatus", kyc.pan?.status);
+            displayKycStatus("myBankStatus", kyc.bank?.status);
+
+            const panMasked = $("myPanMasked");
+
+            if (panMasked) {
+                panMasked.textContent = kyc.pan?.maskedNumber
+                    ? `Masked PAN: ${kyc.pan.maskedNumber}`
+                    : "";
+            }
+
+            const bankDetails = $("myBankDetails");
+
+            if (bankDetails) {
+                bankDetails.textContent = [
+                    kyc.bank?.bankName || "",
+                    kyc.bank?.maskedAccountNumber
+                        ? `Account: ${kyc.bank.maskedAccountNumber}`
+                        : ""
+                ].filter(Boolean).join(" · ");
+            }
+
+            const consent = $("kycSharingConsent");
+
+            if (consent) {
+                consent.checked = kyc.sharingConsent === true;
+            }
+
+            if (message) {
+                message.textContent = result.providerConfigured
+                    ? "KYC status loaded. Verification results come from the configured provider."
+                    : "Status loaded. A real identity verification provider is not configured yet.";
+            }
+        } catch (error) {
+            if (message) {
+                message.textContent =
+                    error.message || "Unable to load KYC status.";
+            }
+        } finally {
+            if (refreshButton) refreshButton.disabled = false;
+        }
+    }
+
+    const refreshKycButton = $("refreshKycButton");
+
+    if (refreshKycButton) {
+        refreshKycButton.addEventListener("click", loadMyKyc);
+    }
+
+    // Save the user's permission to share permitted KYC details.
+    const sharingConsent = $("kycSharingConsent");
+
+    if (sharingConsent) {
+        sharingConsent.addEventListener("change", async () => {
+            const requestedValue = sharingConsent.checked;
+            const message = $("myKycFeedback");
+
+            sharingConsent.disabled = true;
+
+            try {
+                const result = await api("/identity/share-consent", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        granted: requestedValue
+                    })
+                });
+
+                if (message) {
+                    message.textContent =
+                        result.message || "Consent preference updated.";
+                }
+
+                sharingConsent.checked = result.granted === true;
+            } catch (error) {
+                sharingConsent.checked = !requestedValue;
+
+                if (message) {
+                    message.textContent =
+                        error.message || "Unable to update consent.";
+                }
+            } finally {
+                sharingConsent.disabled = false;
+            }
+        });
+    }
+
+    // Load KYC status when the dashboard opens.
+    loadMyKyc();
 
     function addCell(row, value) {
         const cell = document.createElement("td");
@@ -124,7 +240,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!rows.length) {
             const row = document.createElement("tr");
-          
             const cell = document.createElement("td");
 
             cell.colSpan = columns.length;
@@ -197,7 +312,7 @@ document.addEventListener("DOMContentLoaded", () => {
         $("reportNet").textContent =
             money(totalSales - totalExpenses);
 
-        // Loans table: eight columns.
+        // Loans table.
         const loanBody = $("loanTableBody");
         loanBody.replaceChildren();
 
@@ -213,11 +328,11 @@ document.addEventListener("DOMContentLoaded", () => {
             loanBody.appendChild(row);
         } else {
             loans.forEach(loan => {
-        const row = document.createElement("tr");
+                const row = document.createElement("tr");
 
-        row.dataset.loanId = String(loan._id);
-        row.style.cursor = "pointer";
-        row.title = "Click to view borrower details";
+                row.dataset.loanId = String(loan._id);
+                row.style.cursor = "pointer";
+                row.title = "Click to view borrower details";
 
                 addCell(row, loan.lenderName);
                 addCell(row, loan.borrowerName || "—");
@@ -285,16 +400,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 row.appendChild(actionsCell);
-
-                // Click a loan row to display its borrower details.
-                row.style.cursor = "pointer";
-                row.title = "Click to view borrower details";
-
-             
-
                 loanBody.appendChild(row);
             });
         }
+
         // Repayment history.
         renderTable(
             "repaymentTableBody",
@@ -358,8 +467,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Load dashboard records from the backend.
-    
     // Show borrower details when a loan row is clicked.
     $("loanTableBody").addEventListener("click", event => {
         if (event.target.closest("button")) return;
@@ -372,7 +479,10 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
         if (!loan) {
-            showToast("Could not find this loan. Refresh and try again.", "error");
+            showToast(
+                "Could not find this loan. Refresh and try again.",
+                "error"
+            );
             return;
         }
 
@@ -390,7 +500,8 @@ document.addEventListener("DOMContentLoaded", () => {
         $("identityBusiness").textContent =
             borrower.businessName || "Not available";
 
-        const status = borrower.identityVerification?.status || "not_started";
+        const status =
+            borrower.identityVerification?.status || "not_started";
 
         const labels = {
             verified: "Verified",
@@ -853,97 +964,3 @@ document.addEventListener("DOMContentLoaded", () => {
     loadDashboard();
     loadBorrowers();
 });
-
-const IDENTITY_API_URL = "https://rbns.onrender.com/api/identity";
-
-async function loadMyIdentityStatus() {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    throw new Error("Please sign in first.");
-  }
-
-  const response = await fetch(
-    `${IDENTITY_API_URL}/status`,
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-      credentials: "include"
-    }
-  );
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(
-      data.message || "Could not load identity status."
-    );
-  }
-
-  return data;
-}
-
-async function startMyIdentityVerification() {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    throw new Error("Please sign in first.");
-  }
-
-  const consent = window.confirm(
-    "Do you consent to identity verification through an authorized provider?"
-  );
-
-  if (!consent) {
-    return;
-  }
-
-  const response = await fetch(
-    `${IDENTITY_API_URL}/start`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      credentials: "include",
-      body: JSON.stringify({ consent: true })
-    }
-  );
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(
-      data.message || "Could not start identity verification."
-    );
-  }
-
-  return data;
-}
-
-document
-  .getElementById("startIdentityVerificationButton")
-  ?.addEventListener("click", async function () {
-    const button = this;
-    const feedback = document.getElementById("identityFeedback");
-
-    button.disabled = true;
-    feedback.textContent = "Starting identity verification...";
-
-    try {
-      const result = await startMyIdentityVerification();
-
-      if (result) {
-        feedback.textContent =
-          result.message || "Verification request submitted.";
-      }
-    } catch (error) {
-      feedback.textContent =
-        error.message || "Unable to start verification.";
-    } finally {
-      button.disabled = false;
-    }
-  });
