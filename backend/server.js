@@ -84,7 +84,12 @@ app.use("/api/repayments", require("./routes/repayment"));
 app.use("/api/transactions", require("./routes/transaction"));
 app.use("/api/agreements", require("./routes/agreement"));
 app.use("/api/identity", require("./routes/identity"));
-
+app.get("/api/identity/route-check", (req, res) => {
+    res.json({
+        status: "ok",
+        route: "identity-router-check"
+    });
+});
 
 // Handle unknown endpoints
 app.use((req, res) => {
