@@ -853,3 +853,97 @@ document.addEventListener("DOMContentLoaded", () => {
     loadDashboard();
     loadBorrowers();
 });
+
+const IDENTITY_API_URL = "https://rbns.onrender.com/api/identity";
+
+async function loadMyIdentityStatus() {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("Please sign in first.");
+  }
+
+  const response = await fetch(
+    `${IDENTITY_API_URL}/status`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      credentials: "include"
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.message || "Could not load identity status."
+    );
+  }
+
+  return data;
+}
+
+async function startMyIdentityVerification() {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("Please sign in first.");
+  }
+
+  const consent = window.confirm(
+    "Do you consent to identity verification through an authorized provider?"
+  );
+
+  if (!consent) {
+    return;
+  }
+
+  const response = await fetch(
+    `${IDENTITY_API_URL}/start`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      credentials: "include",
+      body: JSON.stringify({ consent: true })
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.message || "Could not start identity verification."
+    );
+  }
+
+  return data;
+}
+
+document
+  .getElementById("startIdentityVerificationButton")
+  ?.addEventListener("click", async function () {
+    const button = this;
+    const feedback = document.getElementById("identityFeedback");
+
+    button.disabled = true;
+    feedback.textContent = "Starting identity verification...";
+
+    try {
+      const result = await startMyIdentityVerification();
+
+      if (result) {
+        feedback.textContent =
+          result.message || "Verification request submitted.";
+      }
+    } catch (error) {
+      feedback.textContent =
+        error.message || "Unable to start verification.";
+    } finally {
+      button.disabled = false;
+    }
+  });

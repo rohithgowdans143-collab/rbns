@@ -94,6 +94,41 @@ const userSchema = new mongoose.Schema(
                 default: null
             }
         },
+        
+        panVerification: {
+        status: {
+            type: String,
+            enum: ["not_started", "pending", "verified", "rejected"],
+            default: "not_started"
+        },
+        provider: { type: String, default: "", maxlength: 100 },
+        referenceId: { type: String, default: "", maxlength: 200 },
+        verifiedAt: { type: Date, default: null },
+        maskedNumber: { type: String, default: "", maxlength: 20 }
+        },
+
+        bankVerification: {
+        status: {
+            type: String,
+            enum: ["not_started", "pending", "verified", "rejected"],
+            default: "not_started"
+        },
+        provider: { type: String, default: "", maxlength: 100 },
+        referenceId: { type: String, default: "", maxlength: 200 },
+        verifiedAt: { type: Date, default: null },
+        bankName: { type: String, default: "", maxlength: 100 },
+        maskedAccountNumber: { type: String, default: "", maxlength: 30 }
+        },
+        kycSharingConsent: {
+            granted: {
+                type: Boolean,
+                default: false
+            },
+            grantedAt: {
+                type: Date,
+                default: null
+            }
+            },
 
         language: {
             type: String,

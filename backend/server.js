@@ -83,6 +83,8 @@ app.use("/api/loans", require("./routes/loan"));
 app.use("/api/repayments", require("./routes/repayment"));
 app.use("/api/transactions", require("./routes/transaction"));
 app.use("/api/agreements", require("./routes/agreement"));
+app.use("/api/identity", require("./routes/identity"));
+
 
 // Handle unknown endpoints
 app.use((req, res) => {
