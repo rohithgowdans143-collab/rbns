@@ -51,6 +51,22 @@
                     <i class="fa-solid fa-wallet"></i>
                     <span>My Loans</span>
                 </a>
+                
+<a href="#loans" class="sidebar-link" data-section="loans">
+    <i class="fa-solid fa-wallet"></i>
+    <span>My Loans</span>
+</a>
+
+<a href="#myKyc" class="sidebar-link" data-section="myKyc">
+    <i class="fa-solid fa-shield-halved"></i>
+    <span>My KYC</span>
+</a>
+
+<a href="#repayments" class="sidebar-link" data-section="repayments">
+    <i class="fa-solid fa-money-bill-transfer"></i>
+    <span>Repayments</span>
+</a>
+
 
                 <a href="#repayments" class="sidebar-link" data-section="repayments">
                     <i class="fa-solid fa-money-bill-transfer"></i>
@@ -424,6 +440,57 @@
         verification provider confirms the result.
     </p>
 </section>
+
+<!-- My KYC Verification -->
+<section class="dashboard-panel content-panel" id="myKyc">
+    <div class="panel-heading">
+        <div>
+            <h2>My KYC Verification</h2>
+            <p>Check your identity, PAN and bank verification progress.</p>
+        </div>
+        <span class="panel-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+        </span>
+    </div>
+
+    <div class="identity-grid">
+        <div class="identity-item">
+            <span>Aadhaar verification</span>
+            <strong id="myAadhaarStatus">Loading...</strong>
+        </div>
+
+        <div class="identity-item">
+            <span>PAN verification</span>
+            <strong id="myPanStatus">Loading...</strong>
+            <small id="myPanMasked"></small>
+        </div>
+
+        <div class="identity-item">
+            <span>Bank verification</span>
+            <strong id="myBankStatus">Loading...</strong>
+            <small id="myBankDetails"></small>
+        </div>
+
+        <div class="identity-item">
+            <span>Share details with lenders</span>
+            <label>
+                <input type="checkbox" id="kycSharingConsent">
+                I consent to sharing permitted, masked KYC details
+            </label>
+        </div>
+    </div>
+
+    <p id="myKycFeedback" role="status" aria-live="polite">
+        Verification requires an authorized identity provider.
+    </p>
+
+    <button type="button" class="btn btn-secondary"
+            id="refreshKycButton">
+        <i class="fa-solid fa-rotate"></i>
+        Refresh KYC Status
+    </button>
+</section>
+
 
                 
 

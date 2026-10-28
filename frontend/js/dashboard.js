@@ -209,7 +209,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Load KYC status when the dashboard opens.
     loadMyKyc();
+    // Start identity verification.
+const startIdentityButton = $("startIdentityVerificationButton");
+const identityFeedback = $("identityFeedback");
 
+if (startIdentityButton && identityFeedback) {
+    startIdentityButton.addEventListener("click", async () => {
+        startIdentityButton.disabled = true;
+        identityFeedback.textContent = "Checking verification service...";
+
+        try {
+            await api("/identity/start", {
+                method: "POST",
+                body: JSON.stringify({})
+            });
+
+            identityFeedback.textContent =
+                "Verification request submitted. Follow the authorized provider's instructions.";
+        } catch (error) {
+            identityFeedback.textContent =
+                error.message ||
+                "Verification could not be started. Please try again later.";
+        } finally {
+            startIdentityButton.disabled = false;
+        }
+    });
+}
     function addCell(row, value) {
         const cell = document.createElement("td");
         cell.textContent = value ?? "—";
