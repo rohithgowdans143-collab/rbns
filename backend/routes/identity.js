@@ -249,11 +249,12 @@ router.post("/pan/verify", async (req, res) => {
             });
         }
 
-        const result = await sandboxKyc.verifyPan({
-            pan: cleanPan,
-            name: String(name).trim(),
-            dob
-        });
+      const result = await sandboxKyc.verifyPan({
+    pan: cleanPan,
+    name: String(name).trim(),
+    dob,
+    consent: true
+});
 
         const data = result?.data || result?.data?.data || result;
 
