@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,6 +29,7 @@
     <div class="dashboard-shell">
 
         <aside class="sidebar" id="sidebar">
+
             <a href="index.html" class="brand sidebar-brand">
                 <span class="brand-icon">
                     <i class="fa-solid fa-chart-pie"></i>
@@ -42,6 +42,7 @@
             <div class="sidebar-caption">WORKSPACE</div>
 
             <nav class="sidebar-nav" aria-label="Main navigation">
+
                 <a href="#overview" class="sidebar-link active" data-section="overview">
                     <i class="fa-solid fa-grid-2"></i>
                     <span>Overview</span>
@@ -51,22 +52,11 @@
                     <i class="fa-solid fa-wallet"></i>
                     <span>My Loans</span>
                 </a>
-                
-<a href="#loans" class="sidebar-link" data-section="loans">
-    <i class="fa-solid fa-wallet"></i>
-    <span>My Loans</span>
-</a>
 
-<a href="#myKyc" class="sidebar-link" data-section="myKyc">
-    <i class="fa-solid fa-shield-halved"></i>
-    <span>My KYC</span>
-</a>
-
-<a href="#repayments" class="sidebar-link" data-section="repayments">
-    <i class="fa-solid fa-money-bill-transfer"></i>
-    <span>Repayments</span>
-</a>
-
+                <a href="#myKyc" class="sidebar-link" data-section="myKyc">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>My KYC</span>
+                </a>
 
                 <a href="#repayments" class="sidebar-link" data-section="repayments">
                     <i class="fa-solid fa-money-bill-transfer"></i>
@@ -92,11 +82,13 @@
                     <i class="fa-solid fa-chart-line"></i>
                     <span>Reports</span>
                 </a>
+
             </nav>
 
             <div class="sidebar-caption sidebar-bottom-caption">PREFERENCES</div>
 
             <nav class="sidebar-nav">
+
                 <a href="#settings" class="sidebar-link" data-section="settings">
                     <i class="fa-solid fa-gear"></i>
                     <span>Settings</span>
@@ -106,6 +98,7 @@
                     <i class="fa-solid fa-right-from-bracket"></i>
                     <span>Log Out</span>
                 </button>
+
             </nav>
 
             <div class="sidebar-help">
@@ -116,12 +109,15 @@
                 <p>Keep your financial records organized.</p>
                 <a href="index.html#about">About MicroLoanX</a>
             </div>
+
         </aside>
 
         <main class="dashboard-main">
 
             <header class="dashboard-topbar">
+
                 <div class="topbar-left">
+
                     <button type="button"
                             class="sidebar-toggle"
                             id="sidebarToggle"
@@ -134,11 +130,14 @@
                         <span class="topbar-eyebrow">YOUR WORKSPACE</span>
                         <h1 id="welcomeTitle">Welcome back!</h1>
                     </div>
+
                 </div>
 
                 <div class="topbar-actions">
+
                     <label class="language-control">
                         <i class="fa-solid fa-globe"></i>
+
                         <select id="languageSelector" aria-label="Choose language">
                             <option value="en">English</option>
                             <option value="kn">ಕನ್ನಡ</option>
@@ -155,18 +154,24 @@
                     </button>
 
                     <div class="profile-avatar" id="profileAvatar">V</div>
+
                 </div>
+
             </header>
 
             <div class="dashboard-content">
 
+                <!-- Overview -->
                 <section class="welcome-banner" id="overview">
+
                     <div>
                         <span class="welcome-tag">
                             <i class="fa-solid fa-sparkles"></i>
                             YOUR BUSINESS AT A GLANCE
                         </span>
+
                         <h2>Make every rupee count.</h2>
+
                         <p>
                             Track your finances, plan repayments and
                             make informed business decisions.
@@ -178,9 +183,12 @@
                         <span class="banner-orbit orbit-a"></span>
                         <span class="banner-orbit orbit-b"></span>
                     </div>
+
                 </section>
 
+                <!-- Financial Overview -->
                 <div class="dashboard-section-heading">
+
                     <div>
                         <h2>Financial Overview</h2>
                         <p>Your business summary</p>
@@ -190,9 +198,11 @@
                         <i class="fa-solid fa-rotate"></i>
                         Refresh
                     </button>
+
                 </div>
 
                 <section class="summary-grid" aria-label="Financial summary">
+
                     <article class="summary-card">
                         <div class="summary-card-top">
                             <span>Outstanding Loans</span>
@@ -236,9 +246,12 @@
                         <h3 id="expensesTotal">₹0</h3>
                         <p>Recorded expenses today</p>
                     </article>
+
                 </section>
 
+                <!-- Quick Actions -->
                 <section class="dashboard-panel quick-panel">
+
                     <div class="panel-heading">
                         <div>
                             <h2>Quick Actions</h2>
@@ -247,6 +260,7 @@
                     </div>
 
                     <div class="quick-actions">
+
                         <button type="button" class="quick-action" data-open-modal="loanModal">
                             <span class="quick-action-icon purple">
                                 <i class="fa-solid fa-plus"></i>
@@ -274,12 +288,16 @@
                             </span>
                             <span>Add Expense</span>
                         </button>
+
                     </div>
+
                 </section>
 
                 <!-- Loans -->
                 <section class="dashboard-panel content-panel" id="loans">
+
                     <div class="panel-heading">
+
                         <div>
                             <h2>My Loans</h2>
                             <p>Track your borrowed amounts and balances</p>
@@ -291,10 +309,13 @@
                             <i class="fa-solid fa-plus"></i>
                             Add Loan
                         </button>
+
                     </div>
 
                     <div class="table-wrapper">
+
                         <table class="data-table">
+
                             <thead>
                                 <tr>
                                     <th>Lender</th>
@@ -315,188 +336,302 @@
                                     </td>
                                 </tr>
                             </tbody>
+
                         </table>
+
                     </div>
+
                 </section>
 
                 <!-- Sales and Expenses -->
                 <div class="two-column-grid">
+
                     <section class="dashboard-panel content-panel" id="sales">
+
                         <div class="panel-heading">
+
                             <div>
                                 <h2>Daily Sales</h2>
                                 <p>Track money received from customers</p>
                             </div>
+
                             <span class="panel-icon cyan">
                                 <i class="fa-solid fa-arrow-trend-up"></i>
                             </span>
+
                         </div>
 
                         <form id="salesForm" class="inline-form">
+
                             <div class="form-group">
                                 <label for="saleAmount">Sale amount (₹)</label>
-                                <input type="number" id="saleAmount"
-                                       min="0.01" max="1000000000" step="0.01"
-                                       placeholder="e.g. 850" required>
+                                <input type="number"
+                                       id="saleAmount"
+                                       min="0.01"
+                                       max="1000000000"
+                                       step="0.01"
+                                       placeholder="e.g. 850"
+                                       required>
                             </div>
 
                             <div class="form-group">
                                 <label for="saleDescription">Description</label>
-                                <input type="text" id="saleDescription"
-                                       maxlength="120" placeholder="e.g. Grocery sales">
+                                <input type="text"
+                                       id="saleDescription"
+                                       maxlength="120"
+                                       placeholder="e.g. Grocery sales"
+                                       required>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Save Sale</button>
+                            <button type="submit" class="btn btn-primary">
+                                Save Sale
+                            </button>
+
                         </form>
 
-                        <div class="inline-feedback" id="salesFeedback"
-                             role="status" aria-live="polite"></div>
+                        <div class="inline-feedback"
+                             id="salesFeedback"
+                             role="status"
+                             aria-live="polite"></div>
+
                     </section>
 
                     <section class="dashboard-panel content-panel" id="expenses">
+
                         <div class="panel-heading">
+
                             <div>
                                 <h2>Business Expenses</h2>
                                 <p>Keep track of money spent</p>
                             </div>
+
                             <span class="panel-icon orange">
                                 <i class="fa-solid fa-receipt"></i>
                             </span>
+
                         </div>
 
                         <form id="expenseForm" class="inline-form">
+
                             <div class="form-group">
                                 <label for="expenseAmount">Expense amount (₹)</label>
-                                <input type="number" id="expenseAmount"
-                                       min="0.01" max="1000000000" step="0.01"
-                                       placeholder="e.g. 300" required>
+                                <input type="number"
+                                       id="expenseAmount"
+                                       min="0.01"
+                                       max="1000000000"
+                                       step="0.01"
+                                       placeholder="e.g. 300"
+                                       required>
                             </div>
 
                             <div class="form-group">
                                 <label for="expenseDescription">Description</label>
-                                <input type="text" id="expenseDescription"
-                                       maxlength="120" placeholder="e.g. Stock purchase">
+                                <input type="text"
+                                       id="expenseDescription"
+                                       maxlength="120"
+                                       placeholder="e.g. Stock purchase"
+                                       required>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Save Expense</button>
+                            <button type="submit" class="btn btn-primary">
+                                Save Expense
+                            </button>
+
                         </form>
 
-                        <div class="inline-feedback" id="expenseFeedback"
-                             role="status" aria-live="polite"></div>
+                        <div class="inline-feedback"
+                             id="expenseFeedback"
+                             role="status"
+                             aria-live="polite"></div>
+
                     </section>
+
                 </div>
 
                 <!-- Borrower Identity and Contact -->
-                
-<!-- Borrower Identity and Contact -->
-<section class="dashboard-panel" id="borrowerIdentity">
-    <div class="panel-heading">
-        <div>
-            <h2>Borrower Identity &amp; Contact</h2>
-            <p>Review registered borrower details and verification status</p>
-        </div>
-    </div>
+                <section class="dashboard-panel" id="borrowerIdentity">
 
-    <div class="identity-grid">
-        <div class="identity-item">
-            <span>Full name</span>
-            <strong id="identityName">Select a loan below</strong>
-        </div>
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Borrower Identity &amp; Contact</h2>
+                            <p>Review registered borrower details and verification status</p>
+                        </div>
+                    </div>
 
-        <div class="identity-item">
-            <span>Mobile number</span>
-            <strong id="identityPhone">—</strong>
-        </div>
+                    <div class="identity-grid">
 
-        <div class="identity-item">
-            <span>Business</span>
-            <strong id="identityBusiness">—</strong>
-        </div>
+                        <div class="identity-item">
+                            <span>Full name</span>
+                            <strong id="identityName">Select a loan below</strong>
+                        </div>
 
-        <div class="identity-item">
-            <span>Identity verification</span>
-            <strong id="identityStatus">Not verified</strong>
-        </div>
-    </div>
+                        <div class="identity-item">
+                            <span>Mobile number</span>
+                            <strong id="identityPhone">—</strong>
+                        </div>
 
-    <div style="margin-top: 18px;">
-        <button type="button"
-                class="btn btn-primary"
-                id="startIdentityVerificationButton">
-            <i class="fa-solid fa-shield-halved"></i>
-            Start My Identity Verification
-        </button>
+                        <div class="identity-item">
+                            <span>Business</span>
+                            <strong id="identityBusiness">—</strong>
+                        </div>
 
-        <p id="identityFeedback"
-           role="status"
-           aria-live="polite"
-           style="margin-top: 10px;">
-            Real verification requires an authorized provider.
-        </p>
-    </div>
+                        <div class="identity-item">
+                            <span>Identity verification</span>
+                            <strong id="identityStatus">Not verified</strong>
+                        </div>
 
-    <p class="identity-notice">
-        Verification remains pending until an authorized identity
-        verification provider confirms the result.
-    </p>
-</section>
+                    </div>
 
-<!-- My KYC Verification -->
-<section class="dashboard-panel content-panel" id="myKyc">
-    <div class="panel-heading">
-        <div>
-            <h2>My KYC Verification</h2>
-            <p>Check your identity, PAN and bank verification progress.</p>
-        </div>
-        <span class="panel-icon">
-            <i class="fa-solid fa-shield-halved"></i>
-        </span>
-    </div>
+                    <div style="margin-top: 18px;">
 
-    <div class="identity-grid">
-        <div class="identity-item">
-            <span>Aadhaar verification</span>
-            <strong id="myAadhaarStatus">Loading...</strong>
-        </div>
+                        <button type="button"
+                                class="btn btn-primary"
+                                id="startIdentityVerificationButton">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            Start My Identity Verification
+                        </button>
 
-        <div class="identity-item">
-            <span>PAN verification</span>
-            <strong id="myPanStatus">Loading...</strong>
-            <small id="myPanMasked"></small>
-        </div>
+                        <p id="identityFeedback"
+                           role="status"
+                           aria-live="polite"
+                           style="margin-top: 10px;">
+                            Real verification requires an authorized provider.
+                        </p>
 
-        <div class="identity-item">
-            <span>Bank verification</span>
-            <strong id="myBankStatus">Loading...</strong>
-            <small id="myBankDetails"></small>
-        </div>
+                    </div>
 
-        <div class="identity-item">
-            <span>Share details with lenders</span>
-            <label>
-                <input type="checkbox" id="kycSharingConsent">
-                I consent to sharing permitted, masked KYC details
-            </label>
-        </div>
-    </div>
+                    <p class="identity-notice">
+                        Verification remains pending until an authorized identity
+                        verification provider confirms the result.
+                    </p>
 
-    <p id="myKycFeedback" role="status" aria-live="polite">
-        Verification requires an authorized identity provider.
-    </p>
+                </section>
 
-    <button type="button" class="btn btn-secondary"
-            id="refreshKycButton">
-        <i class="fa-solid fa-rotate"></i>
-        Refresh KYC Status
-    </button>
-</section>
+                <!-- My KYC Verification -->
+                <section class="dashboard-panel content-panel" id="myKyc">
 
+                    <div class="panel-heading">
 
-                
+                        <div>
+                            <h2>My KYC Verification</h2>
+                            <p>Check your identity, PAN and bank verification progress.</p>
+                        </div>
+
+                        <span class="panel-icon">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </span>
+
+                    </div>
+
+                    <div class="identity-grid">
+
+                        <div class="identity-item">
+                            <span>Aadhaar verification</span>
+                            <strong id="myAadhaarStatus">Loading...</strong>
+                        </div>
+
+                        <div class="identity-item">
+                            <span>PAN verification</span>
+                            <strong id="myPanStatus">Loading...</strong>
+                            <small id="myPanMasked"></small>
+                        </div>
+
+                        <div class="identity-item">
+                            <span>Bank verification</span>
+                            <strong id="myBankStatus">Loading...</strong>
+                            <small id="myBankDetails"></small>
+                        </div>
+
+                        <div class="identity-item">
+                            <span>Share details with lenders</span>
+
+                            <label>
+                                <input type="checkbox" id="kycSharingConsent">
+                                I consent to sharing permitted, masked KYC details
+                            </label>
+                        </div>
+
+                    </div>
+
+                    <p id="myKycFeedback"
+                       role="status"
+                       aria-live="polite">
+                        Verification requires an authorized identity provider.
+                    </p>
+
+                    <!-- PAN Verification Form -->
+                    <div class="kyc-pan-form">
+
+                        <h3>PAN Verification</h3>
+
+                        <div class="form-group">
+                            <label for="panNumber">PAN Number</label>
+                            <input
+                                type="text"
+                                id="panNumber"
+                                placeholder="Enter PAN number"
+                                maxlength="10"
+                                autocomplete="off"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="panName">Name as per PAN</label>
+                            <input
+                                type="text"
+                                id="panName"
+                                placeholder="Enter name as printed on PAN"
+                                maxlength="100"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="panDob">Date of Birth</label>
+                            <input
+                                type="text"
+                                id="panDob"
+                                placeholder="DD/MM/YYYY"
+                                autocomplete="off"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="panConsent">
+                                I consent to PAN verification.
+                            </label>
+                        </div>
+
+                        <button type="button"
+                                class="btn btn-primary"
+                                id="verifyPanButton">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            Verify PAN
+                        </button>
+
+                        <p id="panFeedback"
+                           role="status"
+                           aria-live="polite"></p>
+
+                    </div>
+
+                    <!-- Refresh KYC -->
+                    <button type="button"
+                            class="btn btn-secondary"
+                            id="refreshKycButton">
+
+                        <i class="fa-solid fa-rotate"></i>
+                        Refresh KYC Status
+
+                    </button>
+
+                </section>
 
                 <!-- Repayments -->
                 <section class="dashboard-panel content-panel" id="repayments">
+
                     <div class="panel-heading">
+
                         <div>
                             <h2>Repayment History</h2>
                             <p>Review repayments recorded against your loans</p>
@@ -508,10 +643,13 @@
                             <i class="fa-solid fa-plus"></i>
                             Record Payment
                         </button>
+
                     </div>
 
                     <div class="table-wrapper">
+
                         <table class="data-table">
+
                             <thead>
                                 <tr>
                                     <th>Date</th>
@@ -529,26 +667,36 @@
                                     </td>
                                 </tr>
                             </tbody>
+
                         </table>
+
                     </div>
+
                 </section>
 
                 <!-- Transactions -->
                 <section class="dashboard-panel content-panel" id="transactions">
+
                     <div class="panel-heading">
+
                         <div>
                             <h2>Recent Transactions</h2>
                             <p>Your latest recorded financial activities</p>
                         </div>
 
-                        <button type="button" class="btn btn-secondary" id="exportButton">
+                        <button type="button"
+                                class="btn btn-secondary"
+                                id="exportButton">
                             <i class="fa-solid fa-download"></i>
                             Export CSV
                         </button>
+
                     </div>
 
                     <div class="table-wrapper">
+
                         <table class="data-table">
+
                             <thead>
                                 <tr>
                                     <th>Date</th>
@@ -565,12 +713,16 @@
                                     </td>
                                 </tr>
                             </tbody>
+
                         </table>
+
                     </div>
+
                 </section>
 
                 <!-- Reports -->
                 <section class="dashboard-panel content-panel" id="reports">
+
                     <div class="panel-heading">
                         <div>
                             <h2>Financial Reports</h2>
@@ -579,28 +731,34 @@
                     </div>
 
                     <div class="report-grid">
+
                         <div class="report-stat">
                             <span>Recorded sales</span>
                             <strong id="reportSales">₹0</strong>
                         </div>
+
                         <div class="report-stat">
                             <span>Recorded expenses</span>
                             <strong id="reportExpenses">₹0</strong>
                         </div>
+
                         <div class="report-stat">
                             <span>Sales minus expenses</span>
                             <strong id="reportNet">₹0</strong>
                         </div>
+
                     </div>
 
                     <p class="report-disclaimer">
                         Sales minus expenses is a simple operating estimate,
                         not a complete accounting profit calculation.
                     </p>
+
                 </section>
 
                 <!-- Settings -->
                 <section class="dashboard-panel content-panel" id="settings">
+
                     <div class="panel-heading">
                         <div>
                             <h2>Settings</h2>
@@ -609,6 +767,7 @@
                     </div>
 
                     <div class="settings-row">
+
                         <div>
                             <strong>Preferred language</strong>
                             <p>Choose English, Kannada or Hindi.</p>
@@ -619,7 +778,9 @@
                             <option value="kn">ಕನ್ನಡ</option>
                             <option value="hi">हिन्दी</option>
                         </select>
+
                     </div>
+
                 </section>
 
                 <footer class="dashboard-footer">
@@ -628,43 +789,60 @@
                 </footer>
 
             </div>
+
         </main>
+
     </div>
 
     <!-- Add Loan Modal -->
     <dialog class="app-modal" id="loanModal">
+
         <form id="loanForm" class="modal-form">
+
             <div class="modal-heading">
+
                 <div>
                     <h2>Add a Loan</h2>
                     <p>Record a new loan and its repayment terms.</p>
                 </div>
 
-                <button type="button" class="icon-button modal-close"
+                <button type="button"
+                        class="icon-button modal-close"
                         aria-label="Close dialog">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
+
             </div>
 
-            <!-- Registered borrower dropdown -->
             <div class="form-group">
                 <label for="borrowerSelect">Borrower name</label>
+
                 <select id="borrowerSelect" required>
                     <option value="">Loading registered borrowers...</option>
                 </select>
+
                 <small>Select the registered person receiving this loan.</small>
             </div>
 
             <div class="form-group">
                 <label for="loanAmount">Principal amount (₹)</label>
-                <input id="loanAmount" type="number"
-                       min="0.01" max="1000000000" step="0.01" required>
+                <input id="loanAmount"
+                       type="number"
+                       min="0.01"
+                       max="1000000000"
+                       step="0.01"
+                       required>
             </div>
 
             <div class="form-group">
                 <label for="interestRate">Annual interest rate (%)</label>
-                <input id="interestRate" type="number"
-                       min="0" max="100" step="0.01" value="0" required>
+                <input id="interestRate"
+                       type="number"
+                       min="0"
+                       max="100"
+                       step="0.01"
+                       value="0"
+                       required>
             </div>
 
             <div class="form-group">
@@ -677,32 +855,42 @@
                 <input id="loanNote" maxlength="300">
             </div>
 
-            <div class="inline-feedback" id="loanFeedback"
-                 role="status" aria-live="polite"></div>
+            <div class="inline-feedback"
+                 id="loanFeedback"
+                 role="status"
+                 aria-live="polite"></div>
 
             <button class="btn btn-primary auth-submit" type="submit">
                 Save Loan
             </button>
+
         </form>
+
     </dialog>
 
     <!-- Record Repayment Modal -->
     <dialog class="app-modal" id="repaymentModal">
+
         <form id="repaymentForm" class="modal-form">
+
             <div class="modal-heading">
+
                 <div>
                     <h2>Record Repayment</h2>
                     <p>Record a payment against an existing loan.</p>
                 </div>
 
-                <button type="button" class="icon-button modal-close"
+                <button type="button"
+                        class="icon-button modal-close"
                         aria-label="Close dialog">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
+
             </div>
 
             <div class="form-group">
                 <label for="repaymentLoan">Select loan</label>
+
                 <select id="repaymentLoan" required>
                     <option value="">Choose a loan</option>
                 </select>
@@ -710,8 +898,12 @@
 
             <div class="form-group">
                 <label for="repaymentAmount">Amount paid (₹)</label>
-                <input id="repaymentAmount" type="number"
-                       min="0.01" max="1000000000" step="0.01" required>
+                <input id="repaymentAmount"
+                       type="number"
+                       min="0.01"
+                       max="1000000000"
+                       step="0.01"
+                       required>
             </div>
 
             <div class="form-group">
@@ -724,18 +916,26 @@
                 <input id="repaymentNote" maxlength="200">
             </div>
 
-            <div class="inline-feedback" id="repaymentFeedback"
-                 role="status" aria-live="polite"></div>
+            <div class="inline-feedback"
+                 id="repaymentFeedback"
+                 role="status"
+                 aria-live="polite"></div>
 
             <button class="btn btn-primary auth-submit" type="submit">
                 Save Repayment
             </button>
+
         </form>
+
     </dialog>
 
-    <div class="toast-container" id="toastContainer"
-         aria-live="polite" aria-atomic="true"></div>
+    <!-- Toast Notifications -->
+    <div class="toast-container"
+         id="toastContainer"
+         aria-live="polite"
+         aria-atomic="true"></div>
 
+    <!-- Dashboard JavaScript -->
     <script src="js/dashboard.js"></script>
 
     <!-- MicroLoanX AI Assistant -->
@@ -753,7 +953,9 @@
              aria-label="MicroLoanX AI assistant"
              aria-hidden="true"
              hidden>
+
         <header class="ai-chat-header">
+
             <div class="ai-chat-avatar" aria-hidden="true">✦</div>
 
             <div class="ai-chat-heading">
@@ -761,8 +963,13 @@
                 <p>Your small business assistant</p>
             </div>
 
-            <button id="aiChatClose" class="ai-chat-close"
-                    type="button" aria-label="Close AI assistant">×</button>
+            <button id="aiChatClose"
+                    class="ai-chat-close"
+                    type="button"
+                    aria-label="Close AI assistant">
+                ×
+            </button>
+
         </header>
 
         <div id="aiChatMessages"
@@ -770,26 +977,35 @@
              role="log"
              aria-live="polite"
              aria-relevant="additions">
+
             <div class="ai-chat-message ai-chat-bot">
                 Hi! 👋 I'm your MicroLoanX assistant. Ask me about
                 budgeting, business expenses, sales, or repayment planning.
             </div>
+
         </div>
 
         <div class="ai-chat-suggestions">
-            <button type="button" class="ai-suggestion"
+
+            <button type="button"
+                    class="ai-suggestion"
                     data-question="How can I manage my business expenses?">
                 Manage expenses
             </button>
 
-            <button type="button" class="ai-suggestion"
+            <button type="button"
+                    class="ai-suggestion"
                     data-question="Give me tips for planning loan repayments.">
                 Loan repayment tips
             </button>
+
         </div>
 
         <form id="aiChatForm" class="ai-chat-form">
-            <label class="sr-only" for="aiChatInput">Your question</label>
+
+            <label class="sr-only" for="aiChatInput">
+                Your question
+            </label>
 
             <textarea id="aiChatInput"
                       name="message"
@@ -798,25 +1014,29 @@
                       placeholder="Ask MicroLoanX AI..."
                       required></textarea>
 
-            <button id="aiChatSend" type="submit">Send</button>
+            <button id="aiChatSend" type="submit">
+                Send
+            </button>
+
         </form>
 
-        <p id="aiChatStatus" class="ai-chat-status" role="status">
+        <p id="aiChatStatus"
+           class="ai-chat-status"
+           role="status">
             AI responses require an available API quota.
         </p>
+
     </section>
 
     <script src="js/ai-chat.js" defer></script>
 
-    
-<div class="dashboard-banner">
-    <div>
-        <h2>Build a Stronger Business</h2>
-        <p>Track your progress and make smarter financial decisions.</p>
+    <!-- Dashboard Banner -->
+    <div class="dashboard-banner">
+        <div>
+            <h2>Build a Stronger Business</h2>
+            <p>Track your progress and make smarter financial decisions.</p>
+        </div>
     </div>
-</div>
-
 
 </body>
 </html>
-
