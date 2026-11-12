@@ -1,4 +1,3 @@
-
 "use strict";
 
 /**
@@ -93,4 +92,3 @@ module.exports = {
   startVerification,
   confirmVerification
 };
-
